@@ -16,6 +16,8 @@ const poolExtend = require('./poolExtend');
 const sql = require('./sql');
 // 引入json模块
 const json = require('./json');
+// token
+const jwt = require("jsonwebtoken")
 // 使用连接池，提升性能
 const pool = mysql.createPool(poolExtend({}, mysqlconfig));
 const userData = {
@@ -105,9 +107,17 @@ const userData = {
       const params = req.query || req.params;
       connection.query(sql.logins, [params.username, params.password], (err, result) => {
         if (result != '') {
+          const _result = result
+          let token = jwt.sign({
+            username: params.username//加密的对象
+          }, "abc")//加密算法
           result = {
             code: "200",
             msg: '登录成功',
+            data: {
+              data: _result,
+              token
+            }
           }
         } else {
           result = {
