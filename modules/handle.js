@@ -67,10 +67,10 @@ const userData = {
       });
     });
   },
-  queryById: function (req, res, next) {
-    const id = +req.query.id;
+  queryByUserName: function (req, res, next) {
+    const username = req.query.username;
     pool.getConnection(function (err, connection) {
-      connection.query(sql.queryById, id, function (err, result) {
+      connection.query(sql.queryByUserName, username, function (err, result) {
         if (result != '') {
           const _result = result;
           result = {
@@ -104,7 +104,7 @@ const userData = {
   },
   logins(req, res, next) {
     pool.getConnection((err, connection) => {
-      const params = req.query || req.params;
+      const params = req.body || req.params;
       connection.query(sql.logins, [params.username, params.password], (err, result) => {
         if (result != '') {
           const _result = result
@@ -112,21 +112,22 @@ const userData = {
             username: params.username//加密的对象
           }, "abc")//加密算法
           result = {
-            code: "200",
+            code: 200,
             msg: '登录成功',
             data: {
-              data: _result,
+              data: _result[0],
               token
             }
           }
         } else {
           result = {
-            code: "1",
+            code: 1,
             msg: '账号或密码错误，请重试'
           }
         }
         // 以json形式，把操作结果返回给前台页面
         json(res, result);
+        // console.log(err);
         // 释放连接 
         connection.release();
       })

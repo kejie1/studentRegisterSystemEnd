@@ -13,8 +13,8 @@ router.get('/queryAll', function (req, res, next) {
   user.queryAll(req, res, next);
 });
 
-router.get('/query', function (req, res, next) {
-  user.queryById(req, res, next);
+router.get('/queryByUserName', function (req, res, next) {
+  user.queryByUserName(req, res, next);
 });
 router.get('/deleteUser', function (req, res, next) {
   user.delete(req, res, next);
