@@ -42,7 +42,8 @@ const userData = {
   },
   delete: function (req, res, next) {
     pool.getConnection(function (err, connection) {
-      const id = +req.query.id;
+      const id = req.query.id;
+      console.log(id);
       connection.query(userSql.delete, id, function (err, result) {
         if (result.affectedRows > 0) {
           result = 'delete';

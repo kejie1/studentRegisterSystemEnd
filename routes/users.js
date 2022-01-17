@@ -16,7 +16,7 @@ router.get('/queryAll', function (req, res, next) {
 router.get('/queryByUserName', function (req, res, next) {
   userData.queryByUserName(req, res, next);
 });
-router.get('/deleteUser', function (req, res, next) {
+router.post('/deleteUser', function (req, res, next) {
   userData.delete(req, res, next);
 });
 router.post('/updateUser', function (req, res, next) {
