@@ -13,7 +13,7 @@ const mysqlconfig = require('../config/mysql');
 // 引入连接池配置
 const poolExtend = require('./poolExtend');
 // 引入SQL模块
-const {userSql,collegeSql} = require('./sql');
+const {userSql,collegeSql,studentsSql} = require('./sql');
 // 引入json模块
 const json = require('./json');
 // token
@@ -96,7 +96,7 @@ const userData = {
   queryAll: function (req, res, next) {
     pool.getConnection(function (err, connection) {
       connection.query(userSql.queryAll, function (err, result) {
-        if (result != '') {
+        if (result) {
           const _result = result;
           result = {
             result: 'selectall',
@@ -142,11 +142,12 @@ const userData = {
     })
   }
 };
+// 学院
 const collegeData = {
   queryAll: function (req, res, next) {
     pool.getConnection(function (err, connection) {
       connection.query(collegeSql.queryAll, function (err, result) {
-        if (result != '') {
+        if (result) {
           const _result = result;
           result = {
             result:'selectall',
@@ -161,4 +162,97 @@ const collegeData = {
     });
   },
 }
-module.exports = {userData,collegeData};
+
+// 学生
+const studentsData = {
+  queryAll: function (req, res, next) {
+    pool.getConnection(function (err, connection) {
+      connection.query(studentsSql.queryAll, function (err, result) {
+        if (result) {
+          const _result = result;
+          result = {
+            result:'selectall',
+            data: _result
+          }
+        } else {
+          result = undefined;
+        }
+        json(res, result);
+        connection.release();
+      });
+    });
+  },
+  addUser: function (req, res, next) {
+    pool.getConnection(function (err, connection) {
+      const param = req.body;
+      const params = [param.username, param.password, param.phone,param.email, param.status,param.accountType,param.collegeId]
+      console.log(params);
+      connection.query(studentsSql.insert, params, function (err, result) {
+        if (result) {
+          const _result = result;
+          result = {
+            result:'add',
+          }
+        }
+        // 以json形式，把操作结果返回给前台页面
+        json(res, result);
+        // 释放连接 
+        connection.release();
+      });
+    });
+  },
+  delete: function (req, res, next) {
+    pool.getConnection(function (err, connection) {
+      const id = req.query.id;
+      console.log(id);
+      connection.query(studentsSql.delete, id, function (err, result) {
+        if (result.affectedRows > 0) {
+          result = 'delete';
+        } else {
+          result = undefined;
+        }
+        json(res, result);
+        connection.release();
+      });
+    });
+  },
+  update: function (req, res, next) {
+    const param = req.body;
+    console.log(param);
+    const params = [param.username, param.password, param.phone,param.email, param.status,param.accountType,param.collegeId,param.id]
+    if (param.username == null || param.password == null || param.id == null) {
+      json(res, undefined);
+      return;
+    }
+    pool.getConnection(function (err, connection) {
+      connection.query(studentsSql.update, params, function (err, result) {
+        if (result.affectedRows > 0) {
+          result = 'update'
+        } else {
+          result = undefined;
+        }
+        json(res, result);
+        connection.release();
+      });
+    });
+  },
+  queryByName: function (req, res, next) {
+    const username = req.query.username;
+    pool.getConnection(function (err, connection) {
+      connection.query(studentsSql.queryByName, username, function (err, result) {
+        if (result != '') {
+          const _result = result;
+          result = {
+            result: 'select',
+            data: _result
+          }
+        } else {
+          result = undefined;
+        }
+        json(res, result);
+        connection.release();
+      });
+    });
+  },
+}
+module.exports = {userData,collegeData,studentsData};
