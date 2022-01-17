@@ -13,7 +13,7 @@ const mysqlconfig = require('../config/mysql');
 // 引入连接池配置
 const poolExtend = require('./poolExtend');
 // 引入SQL模块
-const sql = require('./sql');
+const {userSql,collegeSql} = require('./sql');
 // 引入json模块
 const json = require('./json');
 // token
@@ -21,12 +21,17 @@ const jwt = require("jsonwebtoken")
 // 使用连接池，提升性能
 const pool = mysql.createPool(poolExtend({}, mysqlconfig));
 const userData = {
-  add: function (req, res, next) {
+  addUser: function (req, res, next) {
     pool.getConnection(function (err, connection) {
-      const param = req.query || req.params;
-      connection.query(sql.insert, [param.id, param.name, param.age], function (err, result) {
+      const param = req.body;
+      const params = [param.username, param.password, param.phone,param.email, param.status,param.accountType,param.collegeId]
+      console.log(params);
+      connection.query(userSql.insert, params, function (err, result) {
         if (result) {
-          result = 'add'
+          const _result = result;
+          result = {
+            result:'add',
+          }
         }
         // 以json形式，把操作结果返回给前台页面
         json(res, result);
@@ -38,7 +43,7 @@ const userData = {
   delete: function (req, res, next) {
     pool.getConnection(function (err, connection) {
       const id = +req.query.id;
-      connection.query(sql.delete, id, function (err, result) {
+      connection.query(userSql.delete, id, function (err, result) {
         if (result.affectedRows > 0) {
           result = 'delete';
         } else {
@@ -51,12 +56,14 @@ const userData = {
   },
   update: function (req, res, next) {
     const param = req.body;
-    if (param.name == null || param.age == null || param.id == null) {
+    console.log(param);
+    const params = [param.username, param.password, param.phone,param.email, param.status,param.accountType,param.collegeId,param.id]
+    if (param.username == null || param.password == null || param.id == null) {
       json(res, undefined);
       return;
     }
     pool.getConnection(function (err, connection) {
-      connection.query(sql.update, [param.name, param.age, +param.id], function (err, result) {
+      connection.query(userSql.update, params, function (err, result) {
         if (result.affectedRows > 0) {
           result = 'update'
         } else {
@@ -70,7 +77,7 @@ const userData = {
   queryByUserName: function (req, res, next) {
     const username = req.query.username;
     pool.getConnection(function (err, connection) {
-      connection.query(sql.queryByUserName, username, function (err, result) {
+      connection.query(userSql.queryByUserName, username, function (err, result) {
         if (result != '') {
           const _result = result;
           result = {
@@ -87,7 +94,7 @@ const userData = {
   },
   queryAll: function (req, res, next) {
     pool.getConnection(function (err, connection) {
-      connection.query(sql.queryAll, function (err, result) {
+      connection.query(userSql.queryAll, function (err, result) {
         if (result != '') {
           const _result = result;
           result = {
@@ -105,7 +112,7 @@ const userData = {
   logins(req, res, next) {
     pool.getConnection((err, connection) => {
       const params = req.body || req.params;
-      connection.query(sql.logins, [params.username, params.password], (err, result) => {
+      connection.query(userSql.logins, [params.username, params.password], (err, result) => {
         if (result != '') {
           const _result = result
           let token = jwt.sign({
@@ -134,4 +141,23 @@ const userData = {
     })
   }
 };
-module.exports = userData;
+const collegeData = {
+  queryAll: function (req, res, next) {
+    pool.getConnection(function (err, connection) {
+      connection.query(collegeSql.queryAll, function (err, result) {
+        if (result != '') {
+          const _result = result;
+          result = {
+            result:'selectall',
+            data: _result
+          }
+        } else {
+          result = undefined;
+        }
+        json(res, result);
+        connection.release();
+      });
+    });
+  },
+}
+module.exports = {userData,collegeData};
