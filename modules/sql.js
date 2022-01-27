@@ -21,6 +21,7 @@ const studentsSql = {
   update: 'UPDATE s_students SET name=?,sex=?,age=?,phone=?,idCard=?,college=?,class=?,hostelId=?,ethnic=?,birthPlace=?,address=?,college=?,counselor=?,counselorPhone=? WHERE id=?',
   delete: 'DELETE FROM s_students WHERE id=?',
   queryByUserName: 'SELECT * FROM s_students WHERE username=?',
-  queryAll: 'SELECT * FROM s_students',
+  // queryAll: 'SELECT * FROM s_students',
+  queryAll: 'SELECT * FROM s_students order by id desc limit ?, ?',
 }
 module.exports = {userSql,collegeSql,studentsSql};
