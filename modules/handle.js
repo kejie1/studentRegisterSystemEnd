@@ -13,7 +13,7 @@ const mysqlconfig = require('../config/mysql')
 // 引入连接池配置
 const poolExtend = require('./poolExtend')
 // 引入SQL模块
-const { userSql, collegeSql, studentsSql } = require('./sql')
+const { userSql, collegeSql, studentsSql,vocationalSql } = require('./sql')
 // 引入json模块
 const json = require('./json')
 // token
@@ -33,7 +33,6 @@ const userData = {
         param.accountType,
         param.collegeId,
       ]
-      console.log(params)
       connection.query(userSql.insert, params, function (err, result) {
         if (result) {
           const _result = result
@@ -190,7 +189,26 @@ const collegeData = {
     })
   },
 }
-
+// 专业
+const vocationalData = {
+  queryAll: function (req, res, next) {
+    pool.getConnection(function (err, connection) {
+      connection.query(vocationalSql.queryAll, function (err, result) {
+        if (result) {
+          const _result = result
+          result = {
+            result: 'selectall',
+            data: _result,
+          }
+        } else {
+          result = undefined
+        }
+        json(res, result)
+        connection.release()
+      })
+    })
+  },
+}
 // 学生
 const studentsData = {
 
@@ -316,4 +334,4 @@ const studentsData = {
     })
   },
 }
-module.exports = { userData, collegeData, studentsData }
+module.exports = { userData, collegeData, studentsData,vocationalData }

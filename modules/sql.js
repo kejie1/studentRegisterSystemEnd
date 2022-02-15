@@ -14,7 +14,13 @@ const collegeSql = {
   delete: 'DELETE FROM s_college WHERE id=?',
   queryByUserName: 'SELECT * FROM s_college WHERE username=?',
   queryAll: 'SELECT * FROM s_college',
-  logins: 'SELECT * FROM s_college where username=? and password=?'
+}
+const vocationalSql = {
+  insert: 'INSERT INTO s_vocational(username, password,phone,email, status,accountType,collegeId) VALUES(?,?,?,?,?,?,?,?)',
+  update: 'UPDATE s_vocational SET username=?, password=?, status=?, auth=? WHERE id=?',
+  delete: 'DELETE FROM s_vocational WHERE id=?',
+  queryByUserName: 'SELECT * FROM s_vocational WHERE username=?',
+  queryAll: 'SELECT * FROM s_vocational',
 }
 const studentsSql = {
   insert: 'INSERT INTO s_students(name,sex,age,phone,idCard,collegeId,classId,hostelId,ethnic,birthPlace,address,graduate,counselorId,counselorPhone) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
@@ -24,4 +30,4 @@ const studentsSql = {
   // queryAll: 'SELECT * FROM s_students',
   queryAll: 'SELECT * FROM s_students order by id desc limit ?, ?',
 }
-module.exports = {userSql,collegeSql,studentsSql};
+module.exports = {userSql,collegeSql,studentsSql,vocationalSql};
