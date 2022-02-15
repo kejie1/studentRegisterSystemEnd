@@ -284,7 +284,6 @@ const studentsData = {
   },
   update: function (req, res, next) {
     const param = req.body
-    console.log(param)
     const params = [
       param.username,
       param.password,
@@ -312,14 +311,16 @@ const studentsData = {
     })
   },
   queryByName: function (req, res, next) {
-    const username = req.query.username
+    const params = req.query
+    console.log(params);
     pool.getConnection(function (err, connection) {
       connection.query(
         studentsSql.queryByName,
-        username,
+        [params.name,params.collegeId,params.vocationalId],
         function (err, result) {
           if (result != '') {
             const _result = result
+            console.log(result);
             result = {
               result: 'select',
               data: _result,

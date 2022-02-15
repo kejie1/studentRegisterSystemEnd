@@ -26,8 +26,7 @@ const studentsSql = {
   insert: 'INSERT INTO s_students(name,sex,age,phone,idCard,collegeId,classId,hostelId,ethnic,birthPlace,address,graduate,counselorId,counselorPhone) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
   update: 'UPDATE s_students SET name=?,sex=?,age=?,phone=?,idCard=?,college=?,class=?,hostelId=?,ethnic=?,birthPlace=?,address=?,college=?,counselor=?,counselorPhone=? WHERE id=?',
   delete: 'DELETE FROM s_students WHERE id=?',
-  queryByUserName: 'SELECT * FROM s_students WHERE username=?',
-  // queryAll: 'SELECT * FROM s_students',
-  queryAll: 'SELECT * FROM s_students order by id desc limit ?, ?',
+  queryByName: 'SELECT * FROM s_students WHERE name=? and collegeId=? and vocationalId=?',
+  queryAll: 'SELECT * FROM s_students order by id asc limit ?, ?',
 }
 module.exports = {userSql,collegeSql,studentsSql,vocationalSql};
