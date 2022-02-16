@@ -3,11 +3,8 @@ const express = require('express');
 const router = express.Router();
 const {studentsData} = require('../modules/handle');
 /* GET users listing. */
-router.get('/', function (req, res, next) {
-  res.render('index', { title: 'SQL for MySQL' });
-});
 router.post('/addStudent', function (req, res, next) {
-  studentsData.addUser(req, res, next);
+  studentsData.addStudent(req, res, next);
 });
 router.get('/studentsList', function (req, res, next) {
   studentsData.queryAll(req, res, next);

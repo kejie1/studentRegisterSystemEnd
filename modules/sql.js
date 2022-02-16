@@ -23,10 +23,17 @@ const vocationalSql = {
   queryAll: 'SELECT * FROM s_vocational',
 }
 const studentsSql = {
-  insert: 'INSERT INTO s_students(name,sex,age,phone,idCard,collegeId,classId,hostelId,ethnic,birthPlace,address,graduate,counselorId,counselorPhone) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+  insert: 'INSERT INTO s_students(name,studentId,sex,age,phone,idCard,collegeId,vocationalId,classId,hostelId,ethnic,birthPlace,address,graduate,counselorId,counselorPhone) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
   update: 'UPDATE s_students SET name=?,sex=?,age=?,phone=?,idCard=?,college=?,class=?,hostelId=?,ethnic=?,birthPlace=?,address=?,college=?,counselor=?,counselorPhone=? WHERE id=?',
   delete: 'DELETE FROM s_students WHERE id=?',
   queryByName: 'SELECT * FROM s_students WHERE name=? and collegeId=? and vocationalId=?',
   queryAll: 'SELECT * FROM s_students order by id asc limit ?, ?',
 }
-module.exports = {userSql,collegeSql,studentsSql,vocationalSql};
+const counselorSql = {
+  insert: 'INSERT INTO s_counselor(name,studentId,sex,age,phone,idCard,collegeId,vocationalId,classId,hostelId,ethnic,birthPlace,address,graduate,counselorId,counselorPhone) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+  update: 'UPDATE s_counselor SET name=?,sex=?,age=?,phone=?,idCard=?,college=?,class=?,hostelId=?,ethnic=?,birthPlace=?,address=?,college=?,counselor=?,counselorPhone=? WHERE id=?',
+  delete: 'DELETE FROM s_counselor WHERE id=?',
+  queryByName: 'SELECT * FROM s_counselor WHERE name=? and collegeId=? and vocationalId=?',
+  queryAll: 'SELECT * FROM s_counselor order by id asc limit ?, ?',
+}
+module.exports = {userSql,collegeSql,studentsSql,vocationalSql,counselorSql};

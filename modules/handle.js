@@ -13,7 +13,7 @@ const mysqlconfig = require('../config/mysql')
 // 引入连接池配置
 const poolExtend = require('./poolExtend')
 // 引入SQL模块
-const { userSql, collegeSql, studentsSql,vocationalSql } = require('./sql')
+const { userSql, collegeSql, studentsSql,vocationalSql,counselorSql } = require('./sql')
 // 引入json模块
 const json = require('./json')
 // token
@@ -209,6 +209,37 @@ const vocationalData = {
     })
   },
 }
+// 教师信息
+const counselorData = {
+  queryAll: function (req, res, next) {
+    let param = req.query || req.params
+    let currentPage = parseInt(param.currentPage || 1);// 页码
+    let end = parseInt(param.pageSize || 10); // 默认页数
+    let start = (currentPage - 1) * end;
+    pool.getConnection(function (err, connection) {
+      connection.query(counselorSql.queryAll,[start, end], function (err, result) {
+        if (result) {
+          const _result = result
+          result = {
+            result: 'selectall',
+            data: {
+              result: _result,
+              pagination: {
+                pageSize:end,
+                currentPage,
+                total: result.length,
+              },
+            },
+          }
+        } else {
+          result = undefined
+        }
+        json(res, result)
+        connection.release()
+      })
+    })
+  },
+}
 // 学生
 const studentsData = {
 
@@ -240,17 +271,26 @@ const studentsData = {
       })
     })
   },
-  addUser: function (req, res, next) {
+  addStudent: function (req, res, next) {
     pool.getConnection(function (err, connection) {
       const param = req.body
       const params = [
-        param.username,
-        param.password,
+        param.name,
+        param.studentId,
+        param.sex,
+        param.age,
         param.phone,
-        param.email,
-        param.status,
-        param.accountType,
+        param.idCard,
         param.collegeId,
+        param.vocationalId,
+        param.classId,
+        param.hostelId,
+        param.ethnic,
+        param.birthPlace,
+        param.address,
+        param.graduate,
+        param.counselorId,
+        param.counselorPhone,
       ]
       console.log(params)
       connection.query(studentsSql.insert, params, function (err, result) {
@@ -335,4 +375,4 @@ const studentsData = {
     })
   },
 }
-module.exports = { userData, collegeData, studentsData,vocationalData }
+module.exports = { userData, collegeData, studentsData,vocationalData,counselorData }
