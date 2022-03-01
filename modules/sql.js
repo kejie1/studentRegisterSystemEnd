@@ -13,6 +13,7 @@ const collegeSql = {
   update: 'UPDATE s_college SET username=?, password=?, status=?, auth=? WHERE id=?',
   delete: 'DELETE FROM s_college WHERE id=?',
   queryByUserName: 'SELECT * FROM s_college WHERE username=?',
+  queryCollegeStrById: 'SELECT collegeStr FROM s_college WHERE id=?',
   queryAll: 'SELECT * FROM s_college',
 }
 const vocationalSql = {
@@ -20,6 +21,7 @@ const vocationalSql = {
   update: 'UPDATE s_vocational SET username=?, password=?, status=?, auth=? WHERE id=?',
   delete: 'DELETE FROM s_vocational WHERE id=?',
   queryByUserName: 'SELECT * FROM s_vocational WHERE username=?',
+  queryVocationalStrById: 'SELECT vocationalStr FROM s_vocational WHERE id=?',
   queryAll: 'SELECT * FROM s_vocational',
 }
 const studentsSql = {
@@ -34,6 +36,15 @@ const counselorSql = {
   update: 'UPDATE s_counselor SET name=?,sex=?,age=?,phone=?,idCard=?,college=?,class=?,hostelId=?,ethnic=?,birthPlace=?,address=?,college=?,counselor=?,counselorPhone=? WHERE id=?',
   delete: 'DELETE FROM s_counselor WHERE id=?',
   queryByName: 'SELECT * FROM s_counselor WHERE name=? and collegeId=? and vocationalId=?',
+  queryPhoneByName: 'SELECT phone FROM s_counselor WHERE id=?',
   queryAll: 'SELECT * FROM s_counselor order by id asc limit ?, ?',
 }
-module.exports = {userSql,collegeSql,studentsSql,vocationalSql,counselorSql};
+const classSql = {
+  insert: 'INSERT INTO s_class(name,studentId,sex,age,phone,idCard,collegeId,vocationalId,classId,hostelId,ethnic,birthPlace,address,graduate,counselorId,counselorPhone) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+  update: 'UPDATE s_class SET name=?,sex=?,age=?,phone=?,idCard=?,college=?,class=?,hostelId=?,ethnic=?,birthPlace=?,address=?,college=?,counselor=?,counselorPhone=? WHERE id=?',
+  delete: 'DELETE FROM s_class WHERE id=?',
+  queryByName: 'SELECT * FROM s_class WHERE name=? and collegeId=? and vocationalId=?',
+  queryClassStrById: 'SELECT name FROM s_class WHERE id=?',
+  queryAll: 'SELECT * FROM s_class order by id asc limit ?, ?',
+}
+module.exports = {userSql,collegeSql,studentsSql,vocationalSql,counselorSql,classSql};

@@ -16,6 +16,9 @@ router.get('/collegeList', function (req, res, next) {
 router.get('/queryByUserName', function (req, res, next) {
   collegeData.queryByUserName(req, res, next);
 });
+router.get('/queryCollegeStrById', function (req, res, next) {
+  collegeData.queryCollegeStrById(req, res, next);
+});
 router.get('/deleteUser', function (req, res, next) {
   collegeData.delete(req, res, next);
 });

@@ -9,7 +9,9 @@ router.post('/addUser', function (req, res, next) {
 router.get('/counselorList', function (req, res, next) {
   counselorData.queryAll(req, res, next);
 });
-
+router.get('/queryPhoneByName', function (req, res, next) {
+  counselorData.queryPhoneByName(req, res, next);
+});
 router.get('/queryByUserName', function (req, res, next) {
   counselorData.queryByUserName(req, res, next);
 });

@@ -10,6 +10,7 @@ const collegeRouter = require('./routes/college');
 const studentsRouter = require('./routes/students');
 const vocationalRouter = require('./routes/vocational');
 const counselorRouter = require('./routes/counselor');
+const classRouter = require('./routes/class');
 const cors = require('cors')
 var bodyParser = require('body-parser');
 const app = express();
@@ -42,6 +43,7 @@ app.use('/api/college', collegeRouter);
 app.use('/api/students', studentsRouter);
 app.use('/api/vocational', vocationalRouter);
 app.use('/api/counselor', counselorRouter);
+app.use('/api/class', classRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

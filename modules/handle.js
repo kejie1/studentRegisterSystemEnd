@@ -13,7 +13,7 @@ const mysqlconfig = require('../config/mysql')
 // 引入连接池配置
 const poolExtend = require('./poolExtend')
 // 引入SQL模块
-const { userSql, collegeSql, studentsSql,vocationalSql,counselorSql } = require('./sql')
+const { userSql, collegeSql, studentsSql,vocationalSql,counselorSql,classSql } = require('./sql')
 // 引入json模块
 const json = require('./json')
 // token
@@ -188,6 +188,28 @@ const collegeData = {
       })
     })
   },
+  queryCollegeStrById: function (req, res, next) {
+    const params = req.query
+    pool.getConnection(function (err, connection) {
+      connection.query(
+        collegeSql.queryCollegeStrById,
+        [params.id],
+        function (err, result) {
+          if (result != '') {
+            const _result = result
+            result = {
+              result: 'select',
+              data: _result,
+            }
+          } else {
+            result = undefined
+          }
+          json(res, result)
+          connection.release()
+        }
+      )
+    })
+  },
 }
 // 专业
 const vocationalData = {
@@ -206,6 +228,70 @@ const vocationalData = {
         json(res, result)
         connection.release()
       })
+    })
+  },
+  queryVocationalStrById: function (req, res, next) {
+    const params = req.query
+    pool.getConnection(function (err, connection) {
+      connection.query(
+        vocationalSql.queryVocationalStrById,
+        [params.id],
+        function (err, result) {
+          if (result != '') {
+            const _result = result
+            result = {
+              result: 'select',
+              data: _result,
+            }
+          } else {
+            result = undefined
+          }
+          json(res, result)
+          connection.release()
+        }
+      )
+    })
+  },
+}
+// 班级
+const classData = {
+  queryAll: function (req, res, next) {
+    pool.getConnection(function (err, connection) {
+      connection.query(classSql.queryAll, function (err, result) {
+        if (result) {
+          const _result = result
+          result = {
+            result: 'selectall',
+            data: _result,
+          }
+        } else {
+          result = undefined
+        }
+        json(res, result)
+        connection.release()
+      })
+    })
+  },
+  queryClassStrById: function (req, res, next) {
+    const params = req.query
+    pool.getConnection(function (err, connection) {
+      connection.query(
+        classSql.queryClassStrById,
+        [params.id],
+        function (err, result) {
+          if (result != '') {
+            const _result = result
+            result = {
+              result: 'select',
+              data: _result,
+            }
+          } else {
+            result = undefined
+          }
+          json(res, result)
+          connection.release()
+        }
+      )
     })
   },
 }
@@ -237,6 +323,28 @@ const counselorData = {
         json(res, result)
         connection.release()
       })
+    })
+  },
+  queryPhoneByName: function (req, res, next) {
+    const params = req.query
+    pool.getConnection(function (err, connection) {
+      connection.query(
+        counselorSql.queryPhoneByName,
+        [params.id],
+        function (err, result) {
+          if (result != '') {
+            const _result = result
+            result = {
+              result: 'select',
+              data: _result,
+            }
+          } else {
+            result = undefined
+          }
+          json(res, result)
+          connection.release()
+        }
+      )
     })
   },
 }
@@ -375,4 +483,4 @@ const studentsData = {
     })
   },
 }
-module.exports = { userData, collegeData, studentsData,vocationalData,counselorData }
+module.exports = { userData, collegeData, studentsData,vocationalData,counselorData,classData }
