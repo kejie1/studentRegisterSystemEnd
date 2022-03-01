@@ -12,7 +12,8 @@ const vocationalRouter = require('./routes/vocational');
 const counselorRouter = require('./routes/counselor');
 const classRouter = require('./routes/class');
 const cors = require('cors')
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
+const ServerConf=require("./config/serverConfig");
 const app = express();
 app.use(cors())
 app.use(bodyParser.json());
@@ -60,5 +61,6 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+process.env.PORT=ServerConf.ServicePort
 
 module.exports = app;
