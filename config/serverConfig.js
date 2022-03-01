@@ -1,5 +1,5 @@
 const ServerConf= {
-  ServicePort: 3366
+  ServicePort: 3001
  };
 
  module.exports=ServerConf;
