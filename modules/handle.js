@@ -35,11 +35,8 @@ const userData = {
         param.collegeId,
       ]
       connection.query(userSql.insert, params, function (err, result) {
-        if (result) {
-          const _result = result
-          result = {
-            result: 'add',
-          }
+        if (result.affectedRows>0) {
+          result = 'add'
         }
         // 以json形式，把操作结果返回给前台页面
         json(res, result)
@@ -401,13 +398,9 @@ const studentsData = {
         param.counselorId,
         param.counselorPhone,
       ]
-      console.log(params)
       connection.query(studentsSql.insert, params, function (err, result) {
-        if (result) {
-          const _result = result
-          result = {
-            result: 'add',
-          }
+        if (result.affectedRows>0) {
+          result = 'add'
         }
         // 以json形式，把操作结果返回给前台页面
         json(res, result)
