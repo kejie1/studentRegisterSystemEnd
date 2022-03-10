@@ -6,7 +6,7 @@ const {classData} = require('../modules/handle');
 router.post('/addUser', function (req, res, next) {
   classData.addUser(req, res, next);
 });
-router.get('/vocationalList', function (req, res, next) {
+router.get('/classList', function (req, res, next) {
   classData.queryAll(req, res, next);
 });
 

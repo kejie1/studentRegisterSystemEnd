@@ -45,6 +45,6 @@ const classSql = {
   delete: 'DELETE FROM s_class WHERE id=?',
   queryByName: 'SELECT * FROM s_class WHERE name=? and collegeId=? and vocationalId=?',
   queryClassStrById: 'SELECT name FROM s_class WHERE id=?',
-  queryAll: 'SELECT * FROM s_class order by id asc limit ?, ?',
+  queryAll: 'SELECT * FROM s_class',
 }
 module.exports = {userSql,collegeSql,studentsSql,vocationalSql,counselorSql,classSql};

@@ -18,6 +18,7 @@ const { userSql, collegeSql, studentsSql,vocationalSql,counselorSql,classSql } =
 const json = require('./json')
 // token
 const jwt = require('jsonwebtoken')
+const Promise = require('promise')
 // 使用连接池，提升性能
 const pool = mysql.createPool(poolExtend({}, mysqlconfig))
 const userData = {
