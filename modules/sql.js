@@ -26,9 +26,10 @@ const vocationalSql = {
 }
 const studentsSql = {
   insert: 'INSERT INTO s_students(name,studentId,sex,age,phone,idCard,collegeId,vocationalId,classId,hostelId,ethnic,birthPlace,address,graduate,counselorId,counselorPhone) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-  update: 'UPDATE s_students SET name=?,sex=?,age=?,phone=?,idCard=?,college=?,class=?,hostelId=?,ethnic=?,birthPlace=?,address=?,college=?,counselor=?,counselorPhone=? WHERE id=?',
+  update: 'UPDATE s_students SET name=?,studentId=?,sex=?,age=?,phone=?,idCard=?,collegeId=?,vocationalId=?,classId=?,hostelId=?,ethnic=?,birthPlace=?,address=?,graduate=?,counselorId=?,counselorPhone=? WHERE id=?',
   delete: 'DELETE FROM s_students WHERE id=?',
   queryByName: 'SELECT * FROM s_students WHERE name=? and collegeId=? and vocationalId=?',
+  queryById: 'SELECT * FROM s_students WHERE id=?',
   queryAll: 'SELECT * FROM s_students order by id asc limit ?, ?',
 }
 const counselorSql = {
@@ -36,7 +37,7 @@ const counselorSql = {
   update: 'UPDATE s_counselor SET name=?,sex=?,age=?,phone=?,idCard=?,college=?,class=?,hostelId=?,ethnic=?,birthPlace=?,address=?,college=?,counselor=?,counselorPhone=? WHERE id=?',
   delete: 'DELETE FROM s_counselor WHERE id=?',
   queryByName: 'SELECT * FROM s_counselor WHERE name=? and collegeId=? and vocationalId=?',
-  queryPhoneByName: 'SELECT phone FROM s_counselor WHERE id=?',
+  queryPhoneByName: 'SELECT * FROM s_counselor WHERE id=?',
   queryAll: 'SELECT * FROM s_counselor order by id asc limit ?, ?',
 }
 const classSql = {
@@ -44,7 +45,7 @@ const classSql = {
   update: 'UPDATE s_class SET name=?,sex=?,age=?,phone=?,idCard=?,college=?,class=?,hostelId=?,ethnic=?,birthPlace=?,address=?,college=?,counselor=?,counselorPhone=? WHERE id=?',
   delete: 'DELETE FROM s_class WHERE id=?',
   queryByName: 'SELECT * FROM s_class WHERE name=? and collegeId=? and vocationalId=?',
-  queryClassStrById: 'SELECT name FROM s_class WHERE id=?',
+  queryClassStrById: 'SELECT * FROM s_class WHERE id=?',
   queryAll: 'SELECT * FROM s_class',
 }
 module.exports = {userSql,collegeSql,studentsSql,vocationalSql,counselorSql,classSql};

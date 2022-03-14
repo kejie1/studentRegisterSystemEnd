@@ -256,7 +256,7 @@ const classData = {
   queryAll: function (req, res, next) {
     pool.getConnection(function (err, connection) {
       connection.query(classSql.queryAll, function (err, result) {
-        if (result) {
+        if (result != '') {
           const _result = result
           result = {
             result: 'selectall',
@@ -454,7 +454,6 @@ const studentsData = {
   },
   queryByName: function (req, res, next) {
     const params = req.query
-    console.log(params);
     pool.getConnection(function (err, connection) {
       connection.query(
         studentsSql.queryByName,
@@ -462,7 +461,28 @@ const studentsData = {
         function (err, result) {
           if (result != '') {
             const _result = result
-            console.log(result);
+            result = {
+              result: 'select',
+              data: _result,
+            }
+          } else {
+            result = undefined
+          }
+          json(res, result)
+          connection.release()
+        }
+      )
+    })
+  },
+  queryById: function (req, res, next) {
+    const params = req.query
+    pool.getConnection(function (err, connection) {
+      connection.query(
+        studentsSql.queryById,
+        [params.id],
+        function (err, result) {
+          if (result != '') {
+            const _result = result
             result = {
               result: 'select',
               data: _result,
