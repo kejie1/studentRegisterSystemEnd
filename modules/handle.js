@@ -466,8 +466,6 @@ const studentsData = {
     }
     pool.getConnection(function (err, connection) {
       connection.query(studentsSql.update, params, function (err, result) {
-        console.log(studentsSql.update);
-        console.log(result);
         if (result.affectedRows > 0) {
           result = 'update'
         } else {
@@ -520,6 +518,21 @@ const studentsData = {
           connection.release()
         }
       )
+    })
+  },
+  delete: function (req, res, next) {
+    pool.getConnection(function (err, connection) {
+      const id = req.query.id
+      connection.query(studentsSql.delete, id, function (err, result) {
+        console.log(result);
+        if (result.affectedRows > 0) {
+          result = 'delete'
+        } else {
+          result = undefined
+        }
+        json(res, result)
+        connection.release()
+      })
     })
   },
 }
