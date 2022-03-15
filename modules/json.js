@@ -19,7 +19,7 @@ const json = function (res, result) {
   } else if (result === 'update') {
     res.json({
       code: 200,
-      msg: '更改成功'
+      msg: '修改成功'
     });
   } else if (result.result != 'undefined' && result.result === 'select') {
     res.json({

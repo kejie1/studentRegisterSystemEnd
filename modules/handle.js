@@ -48,7 +48,6 @@ const userData = {
   delete: function (req, res, next) {
     pool.getConnection(function (err, connection) {
       const id = req.query.id
-      console.log(id)
       connection.query(userSql.delete, id, function (err, result) {
         if (result.affectedRows > 0) {
           result = 'delete'
@@ -62,7 +61,6 @@ const userData = {
   },
   update: function (req, res, next) {
     const param = req.body
-    console.log(param)
     const params = [
       param.username,
       param.password,
@@ -79,7 +77,7 @@ const userData = {
     }
     pool.getConnection(function (err, connection) {
       connection.query(userSql.update, params, function (err, result) {
-        if (result.affectedRows > 0) {
+        if (result != '') {
           result = 'update'
         } else {
           result = undefined
@@ -96,7 +94,7 @@ const userData = {
         userSql.queryByUserName,
         username,
         function (err, result) {
-          if (result != '') {
+          if (result.affectedRows > 0) {
             const _result = result
             result = {
               result: 'select',
@@ -398,6 +396,7 @@ const studentsData = {
         param.counselorId,
         param.counselorPhone,
       ]
+      console.log(params);
       connection.query(studentsSql.insert, params, function (err, result) {
         if (result.affectedRows>0) {
           result = 'add'
@@ -426,22 +425,49 @@ const studentsData = {
   },
   update: function (req, res, next) {
     const param = req.body
-    const params = [
-      param.username,
-      param.password,
-      param.phone,
-      param.email,
-      param.status,
-      param.accountType,
-      param.collegeId,
-      param.id,
-    ]
-    if (param.username == null || param.password == null || param.id == null) {
+    console.log(param)
+      const params = [
+        param.name,
+        param.studentId,
+        param.sex,
+        param.age,
+        param.phone,
+        param.idCard,
+        param.collegeId,
+        param.vocationalId,
+        param.classId,
+        param.hostelId,
+        param.ethnic,
+        param.birthPlace,
+        param.address,
+        param.graduate,
+        param.counselorId,
+        param.counselorPhone,
+        param.id,
+      ]
+    if (param.id == null || param.name == null ||
+      param.studentId == null ||
+      param.sex == null ||
+      param.age == null ||
+      param.phone == null ||
+      param.idCard == null ||
+      param.collegeId == null ||
+      param.vocationalId == null ||
+      param.classId == null ||
+      param.hostelId == null ||
+      param.ethnic == null ||
+      param.birthPlace == null ||
+      param.address == null ||
+      param.graduate == null ||
+      param.counselorId == null ||
+      param.counselorPhone == null) {
       json(res, undefined)
       return
     }
     pool.getConnection(function (err, connection) {
       connection.query(studentsSql.update, params, function (err, result) {
+        console.log(studentsSql.update);
+        console.log(result);
         if (result.affectedRows > 0) {
           result = 'update'
         } else {
