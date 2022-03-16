@@ -9,7 +9,9 @@ router.post('/addStudent', function (req, res, next) {
 router.get('/studentsList', function (req, res, next) {
   studentsData.queryAll(req, res, next);
 });
-
+router.get('/queryCount', function (req, res, next) {
+  studentsData.queryCount(req, res, next);
+});
 router.get('/queryByName', function (req, res, next) {
   studentsData.queryByName(req, res, next);
 });

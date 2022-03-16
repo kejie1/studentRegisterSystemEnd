@@ -13,7 +13,14 @@ const mysqlconfig = require('../config/mysql')
 // 引入连接池配置
 const poolExtend = require('./poolExtend')
 // 引入SQL模块
-const { userSql, collegeSql, studentsSql,vocationalSql,counselorSql,classSql } = require('./sql')
+const {
+  userSql,
+  collegeSql,
+  studentsSql,
+  vocationalSql,
+  counselorSql,
+  classSql,
+} = require('./sql')
 // 引入json模块
 const json = require('./json')
 // token
@@ -35,7 +42,7 @@ const userData = {
         param.collegeId,
       ]
       connection.query(userSql.insert, params, function (err, result) {
-        if (result.affectedRows>0) {
+        if (result.affectedRows > 0) {
           result = 'add'
         }
         // 以json形式，把操作结果返回给前台页面
@@ -295,30 +302,34 @@ const classData = {
 const counselorData = {
   queryAll: function (req, res, next) {
     let param = req.query || req.params
-    let currentPage = parseInt(param.currentPage || 1);// 页码
-    let end = parseInt(param.pageSize || 10); // 默认页数
-    let start = (currentPage - 1) * end;
+    let currentPage = parseInt(param.currentPage || 1) // 页码
+    let end = parseInt(param.pageSize || 10) // 默认页数
+    let start = (currentPage - 1) * end
     pool.getConnection(function (err, connection) {
-      connection.query(counselorSql.queryAll,[start, end], function (err, result) {
-        if (result) {
-          const _result = result
-          result = {
-            result: 'selectall',
-            data: {
-              result: _result,
-              pagination: {
-                pageSize:end,
-                currentPage,
-                total: result.length,
+      connection.query(
+        counselorSql.queryAll,
+        [start, end],
+        function (err, result) {
+          if (result) {
+            const _result = result
+            result = {
+              result: 'selectall',
+              data: {
+                result: _result,
+                pagination: {
+                  pageSize: end,
+                  currentPage,
+                  total: result.length,
+                },
               },
-            },
+            }
+          } else {
+            result = undefined
           }
-        } else {
-          result = undefined
+          json(res, result)
+          connection.release()
         }
-        json(res, result)
-        connection.release()
-      })
+      )
     })
   },
   queryPhoneByName: function (req, res, next) {
@@ -345,27 +356,16 @@ const counselorData = {
   },
 }
 // 学生
+let total = 0
 const studentsData = {
-
-  queryAll: function (req, res, next) {
-    let param = req.query || req.params
-    let currentPage = parseInt(param.currentPage || 1);// 页码
-    let end = parseInt(param.pageSize || 10); // 默认页数
-    let start = (currentPage - 1) * end;
+  queryCount: function (req, res, next) {
     pool.getConnection(function (err, connection) {
-      connection.query(studentsSql.queryAll,[start, end], function (err, result) {
+      connection.query(studentsSql.queryCount, function (err, result) {
         if (result) {
           const _result = result
+          total = _result[0]['COUNT(*)']
           result = {
-            result: 'selectall',
-            data: {
-              result: _result,
-              pagination: {
-                pageSize:end,
-                currentPage,
-                total: result.length,
-              },
-            },
+            result: 'select',
           }
         } else {
           result = undefined
@@ -373,6 +373,39 @@ const studentsData = {
         json(res, result)
         connection.release()
       })
+    })
+  },
+  queryAll: function (req, res, next) {
+    let param = req.query || req.params
+    let currentPage = parseInt(param.currentPage || 1) // 页码
+    let end = parseInt(param.pageSize || 10) // 默认页数
+    let start = (currentPage - 1) * end
+
+    pool.getConnection(function (err, connection) {
+      connection.query(
+        studentsSql.queryAll,
+        [start, end],
+        function (err, result) {
+          if (result) {
+            const _result = result
+            result = {
+              result: 'selectall',
+              data: {
+                result: _result,
+                pagination: {
+                  pageSize: end,
+                  currentPage,
+                  total,
+                },
+              },
+            }
+          } else {
+            result = undefined
+          }
+          json(res, result)
+          connection.release()
+        }
+      )
     })
   },
   addStudent: function (req, res, next) {
@@ -396,9 +429,9 @@ const studentsData = {
         param.counselorId,
         param.counselorPhone,
       ]
-      console.log(params);
+      console.log(params)
       connection.query(studentsSql.insert, params, function (err, result) {
-        if (result.affectedRows>0) {
+        if (result.affectedRows > 0) {
           result = 'add'
         }
         // 以json形式，把操作结果返回给前台页面
@@ -426,26 +459,28 @@ const studentsData = {
   update: function (req, res, next) {
     const param = req.body
     console.log(param)
-      const params = [
-        param.name,
-        param.studentId,
-        param.sex,
-        param.age,
-        param.phone,
-        param.idCard,
-        param.collegeId,
-        param.vocationalId,
-        param.classId,
-        param.hostelId,
-        param.ethnic,
-        param.birthPlace,
-        param.address,
-        param.graduate,
-        param.counselorId,
-        param.counselorPhone,
-        param.id,
-      ]
-    if (param.id == null || param.name == null ||
+    const params = [
+      param.name,
+      param.studentId,
+      param.sex,
+      param.age,
+      param.phone,
+      param.idCard,
+      param.collegeId,
+      param.vocationalId,
+      param.classId,
+      param.hostelId,
+      param.ethnic,
+      param.birthPlace,
+      param.address,
+      param.graduate,
+      param.counselorId,
+      param.counselorPhone,
+      param.id,
+    ]
+    if (
+      param.id == null ||
+      param.name == null ||
       param.studentId == null ||
       param.sex == null ||
       param.age == null ||
@@ -460,7 +495,8 @@ const studentsData = {
       param.address == null ||
       param.graduate == null ||
       param.counselorId == null ||
-      param.counselorPhone == null) {
+      param.counselorPhone == null
+    ) {
       json(res, undefined)
       return
     }
@@ -481,7 +517,7 @@ const studentsData = {
     pool.getConnection(function (err, connection) {
       connection.query(
         studentsSql.queryByName,
-        [params.name,params.collegeId,params.vocationalId],
+        [params.name, params.collegeId, params.vocationalId],
         function (err, result) {
           if (result != '') {
             const _result = result
@@ -524,7 +560,7 @@ const studentsData = {
     pool.getConnection(function (err, connection) {
       const id = req.query.id
       connection.query(studentsSql.delete, id, function (err, result) {
-        console.log(result);
+        console.log(result)
         if (result.affectedRows > 0) {
           result = 'delete'
         } else {
@@ -536,4 +572,11 @@ const studentsData = {
     })
   },
 }
-module.exports = { userData, collegeData, studentsData,vocationalData,counselorData,classData }
+module.exports = {
+  userData,
+  collegeData,
+  studentsData,
+  vocationalData,
+  counselorData,
+  classData,
+}

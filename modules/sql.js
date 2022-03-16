@@ -31,6 +31,7 @@ const studentsSql = {
   queryByName: 'SELECT * FROM s_students WHERE name=? and collegeId=? and vocationalId=?',
   queryById: 'SELECT * FROM s_students WHERE id=?',
   queryAll: 'SELECT * FROM s_students order by id asc limit ?, ?',
+  queryCount: 'SELECT COUNT(*) FROM s_students',
 }
 const counselorSql = {
   insert: 'INSERT INTO s_counselor(name,studentId,sex,age,phone,idCard,collegeId,vocationalId,classId,hostelId,ethnic,birthPlace,address,graduate,counselorId,counselorPhone) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
@@ -48,4 +49,4 @@ const classSql = {
   queryClassStrById: 'SELECT * FROM s_class WHERE id=?',
   queryAll: 'SELECT * FROM s_class',
 }
-module.exports = {userSql,collegeSql,studentsSql,vocationalSql,counselorSql,classSql};
+module.exports = { userSql, collegeSql, studentsSql, vocationalSql, counselorSql, classSql };
