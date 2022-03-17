@@ -1,7 +1,7 @@
 //router/index.js
 const express = require('express');
 const router = express.Router();
-const {classData} = require('../modules/handle');
+const { classData } = require('../modules/handle');
 /* GET users listing. */
 router.post('/addUser', function (req, res, next) {
   classData.addUser(req, res, next);
