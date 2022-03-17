@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "nodemon ./bin/www",
+    "lint": "eslint --fix --ext .js,.ts",
+    "prepare": "husky install",
+    "commit": "cz"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -16,5 +19,14 @@
     "morgan": "~1.9.1",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.15"
+  },
+  "devDependencies": {
+    "cz-customizable": "^6.3.0",
+    "eslint": "^8.11.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-customizable"
+    }
   }
 }

@@ -1,4 +1,3 @@
-//sql.js
 // SQL语句封裝
 const userSql = {
   insert: 'INSERT INTO s_user(username, password,phone,email, status,accountType,collegeId) VALUES(?,?,?,?,?,?,?)',
