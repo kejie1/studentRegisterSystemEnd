@@ -5,7 +5,6 @@
   "scripts": {
     "start": "nodemon ./bin/www",
     "lint": "eslint --fix --ext .js,.ts",
-    "prepare": "husky install",
     "commit": "cz"
   },
   "dependencies": {
