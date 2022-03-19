@@ -2,7 +2,7 @@
 const mysql = {
   host: '127.0.0.1',
   user: 'root',
-  password: 'root',
+  password: '123456',
   database: 'studentRegisterSystem',
   port: 3306
 };
