@@ -18,6 +18,9 @@ router.get('/queryByName', function (req, res, next) {
 router.get('/queryById', function (req, res, next) {
   studentsData.queryById(req, res, next);
 });
+router.get('/queryByHostel', function (req, res, next) {
+  studentsData.queryByHostel(req, res, next);
+});
 router.get('/deleteStudent', function (req, res, next) {
   studentsData.delete(req, res, next);
 });

@@ -433,6 +433,86 @@ const hostelData = {
       )
     })
   },
+  queryById: function (req, res, next) {
+    const params = req.query
+    pool.getConnection(function (err, connection) {
+      connection.query(
+        hostelSql.queryById,
+        [params.id],
+        function (err, result) {
+          if (result != '') {
+            const _result = result
+            result = {
+              result: 'select',
+              data: _result,
+            }
+          } else {
+            result = undefined
+          }
+          json(res, result)
+          connection.release()
+        }
+      )
+    })
+  },
+  addHostel: function (req, res, next) {
+    pool.getConnection(function (err, connection) {
+      const param = req.body
+      const params = [
+        param.hostelSex,
+        param.hostelBuild,
+        param.hostelName,
+      ]
+      connection.query(hostelSql.insert, params, function (err, result) {
+        if (result.affectedRows > 0) {
+          result = 'add'
+        }
+        // 以json形式，把操作结果返回给前台页面
+        json(res, result)
+        // 释放连接
+        connection.release()
+      })
+    })
+  },
+  delete: function (req, res, next) {
+    pool.getConnection(function (err, connection) {
+      const id = req.body.id
+      connection.query(hostelSql.delete, id, function (err, result) {
+        if (result.affectedRows > 0) {
+          result = 'delete'
+        } else {
+          result = undefined
+        }
+        json(res, result)
+        connection.release()
+      })
+    })
+  },
+  update: function (req, res, next) {
+    const param = req.body
+    console.log(param.id ,param.hostelSex,param.hostelBuild, param.hostelName);
+    if (param.id == null || param.hostelSex == null || param.hostelBuild == null || param.hostelName == null) {
+      json(res, undefined)
+      return
+    }
+    const params = [
+      param.hostelSex,
+      param.hostelBuild,
+      param.hostelName,
+      param.id,
+    ]
+    pool.getConnection(function (err, connection) {
+      connection.query(hostelSql.update, params, function (err, result) {
+        if (result != '') {
+          result = 'update'
+        } else {
+          result = undefined
+        }
+        json(res, result)
+        connection.release()
+      })
+    })
+  },
 }
 // 学生
 const studentsData = {
@@ -536,7 +616,6 @@ const studentsData = {
   },
   update: function (req, res, next) {
     const param = req.body
-    console.log(param)
     const params = [
       param.name,
       param.studentId,
@@ -618,6 +697,28 @@ const studentsData = {
       connection.query(
         studentsSql.queryById,
         [params.id],
+        function (err, result) {
+          if (result != '') {
+            const _result = result
+            result = {
+              result: 'select',
+              data: _result,
+            }
+          } else {
+            result = undefined
+          }
+          json(res, result)
+          connection.release()
+        }
+      )
+    })
+  },
+  queryByHostel: function (req, res, next) {
+    const params = req.query
+    pool.getConnection(function (err, connection) {
+      connection.query(
+        studentsSql.queryByHostel,
+        [params.hostelId],
         function (err, result) {
           if (result != '') {
             const _result = result

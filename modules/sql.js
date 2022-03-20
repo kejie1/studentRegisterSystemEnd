@@ -31,6 +31,7 @@ const studentsSql = {
   queryById: 'SELECT * FROM s_students WHERE id=?',
   queryAll: 'SELECT * FROM s_students order by id asc limit ?, ?',
   queryCount: 'SELECT COUNT(*) FROM s_students',
+  queryByHostel: 'SELECT * FROM s_students WHERE hostelId=?',
 }
 const counselorSql = {
   insert: 'INSERT INTO s_counselor(name,studentId,sex,age,phone,idCard,collegeId,vocationalId,classId,hostelId,ethnic,birthPlace,address,graduate,counselorId,counselorPhone) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
@@ -51,8 +52,9 @@ const classSql = {
 const hostelSql = {
   insert: 'INSERT INTO s_hostel ( hostelSex, hostelBuild, hostelName) VALUES (?,?,?)',
   update: 'UPDATE s_hostel SET hostelSex = ?, hostelBuild = ?, hostelName = ? WHERE id = ?',
+  delete: 'DELETE FROM s_hostel WHERE id=?',
   queryHostelName: 'SELECT * FROM s_hostel WHERE hostelName LIKE ?',
-  queryClassStrById: 'SELECT * FROM s_hostel WHERE id=?',
+  queryById: 'SELECT * FROM s_hostel WHERE id=?',
   queryAll: 'SELECT * FROM s_hostel order by id asc limit ?, ?',
   queryCount: 'SELECT COUNT(*) FROM s_students',
 }
