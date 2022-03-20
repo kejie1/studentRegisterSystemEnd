@@ -48,4 +48,12 @@ const classSql = {
   queryClassStrById: 'SELECT * FROM s_class WHERE id=?',
   queryAll: 'SELECT * FROM s_class',
 }
-module.exports = { userSql, collegeSql, studentsSql, vocationalSql, counselorSql, classSql };
+const hostelSql = {
+  insert: 'INSERT INTO s_hostel ( hostelSex, hostelBuild, hostelName) VALUES (?,?,?)',
+  update: 'UPDATE s_hostel SET hostelSex = ?, hostelBuild = ?, hostelName = ? WHERE id = ?',
+  queryHostelName: 'SELECT * FROM s_hostel WHERE hostelName LIKE ?',
+  queryClassStrById: 'SELECT * FROM s_hostel WHERE id=?',
+  queryAll: 'SELECT * FROM s_hostel order by id asc limit ?, ?',
+  queryCount: 'SELECT COUNT(*) FROM s_students',
+}
+module.exports = { userSql, collegeSql, studentsSql, vocationalSql, counselorSql, classSql ,hostelSql};

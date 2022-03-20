@@ -20,6 +20,7 @@ const {
   vocationalSql,
   counselorSql,
   classSql,
+  hostelSql,
 } = require('./sql')
 // 引入json模块
 const json = require('./json')
@@ -28,6 +29,7 @@ const jwt = require('jsonwebtoken')
 const Promise = require('promise')
 // 使用连接池，提升性能
 const pool = mysql.createPool(poolExtend({}, mysqlconfig))
+let total = 0
 const userData = {
   addUser: function (req, res, next) {
     pool.getConnection(function (err, connection) {
@@ -355,8 +357,84 @@ const counselorData = {
     })
   },
 }
+// 宿舍
+const hostelData = {
+  queryCount: function (req, res, next) {
+    pool.getConnection(function (err, connection) {
+      connection.query(hostelSql.queryCount, function (err, result) {
+        if (result) {
+          const _result = result
+          total = _result[0]['COUNT(*)']
+          result = {
+            result: 'select',
+          }
+        } else {
+          result = undefined
+        }
+        json(res, result)
+        connection.release()
+      })
+    })
+  },
+  queryAll: function (req, res, next) {
+    console.log(req);
+    let param = req.query || req.params
+    let currentPage = parseInt(param.currentPage || 1) // 页码
+    let end = parseInt(param.pageSize || 10) // 默认页数
+    let start = (currentPage - 1) * end
+    pool.getConnection(function (err, connection) {
+      connection.query(
+        hostelSql.queryAll,
+        [start, end],
+        function (err, result) {
+          if (result) {
+            const _result = result
+            result = {
+              result: 'selectall',
+              data: {
+                result: _result,
+                pagination: {
+                  pageSize: end,
+                  currentPage,
+                  total,
+                },
+              },
+            }
+          } else {
+            result = undefined
+          }
+          json(res, result)
+          connection.release()
+        }
+      )
+    })
+  },
+  queryHostelName: function (req, res, next) {
+    const params = req.query
+    pool.getConnection(function (err, connection) {
+      connection.query(
+        hostelSql.queryHostelName,
+        ['%'+params.hostelName+'%'],
+        function (err, result) {
+          if (result != '') {
+            const _result = result
+            result = {
+              result: 'select',
+              data: {
+                result: _result,
+              },
+            }
+          } else {
+            result = undefined
+          }
+          json(res, result)
+          connection.release()
+        }
+      )
+    })
+  },
+}
 // 学生
-let total = 0
 const studentsData = {
   queryCount: function (req, res, next) {
     pool.getConnection(function (err, connection) {
@@ -579,4 +657,5 @@ module.exports = {
   vocationalData,
   counselorData,
   classData,
+  hostelData
 }
