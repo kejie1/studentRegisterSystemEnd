@@ -8,19 +8,22 @@ const userSql = {
   logins: 'SELECT * FROM s_user where username=? and password=?'
 };
 const collegeSql = {
-  insert: 'INSERT INTO s_college(username, password,phone,email, status,accountType,collegeId) VALUES(?,?,?,?,?,?,?,?)',
-  update: 'UPDATE s_college SET username=?, password=?, status=?, auth=? WHERE id=?',
+  insert: 'INSERT INTO s_college(collegeStr, principal) VALUES(?,?)',
+  update: 'UPDATE s_college SET collegeStr=?, principal=? WHERE id=?',
   delete: 'DELETE FROM s_college WHERE id=?',
   queryByUserName: 'SELECT * FROM s_college WHERE username=?',
   queryCollegeStrById: 'SELECT collegeStr FROM s_college WHERE id=?',
-  queryAll: 'SELECT * FROM s_college',
+  queryCollegeById: 'SELECT * FROM s_college WHERE id=?',
+  queryAll: 'SELECT * FROM s_college order by id asc limit ?, ?',
+  queryCount: 'SELECT COUNT(*) FROM s_college',
+  queryCollegeName: 'SELECT * FROM s_college WHERE collegeStr LIKE ?',
 }
 const vocationalSql = {
   insert: 'INSERT INTO s_vocational(username, password,phone,email, status,accountType,collegeId) VALUES(?,?,?,?,?,?,?,?)',
   update: 'UPDATE s_vocational SET username=?, password=?, status=?, auth=? WHERE id=?',
   delete: 'DELETE FROM s_vocational WHERE id=?',
   queryByUserName: 'SELECT * FROM s_vocational WHERE username=?',
-  queryVocationalStrById: 'SELECT vocationalStr FROM s_vocational WHERE id=?',
+  queryVocationalStrById: 'SELECT * FROM s_vocational WHERE id=?',
   queryAll: 'SELECT * FROM s_vocational',
 }
 const studentsSql = {
@@ -58,4 +61,4 @@ const hostelSql = {
   queryAll: 'SELECT * FROM s_hostel order by id asc limit ?, ?',
   queryCount: 'SELECT COUNT(*) FROM s_students',
 }
-module.exports = { userSql, collegeSql, studentsSql, vocationalSql, counselorSql, classSql ,hostelSql};
+module.exports = { userSql, collegeSql, studentsSql, vocationalSql, counselorSql, classSql, hostelSql };
