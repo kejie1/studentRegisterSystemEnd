@@ -1,9 +1,9 @@
 // 连接配置
 const mysql = {
-  host: '127.0.0.1',
-  user: 'root',
+  host: '49.234.29.60',
+  user: 'srseroot',
   password: '123456',
-  database: 'studentRegisterSystem',
+  database: 'srse',
   port: 3306
 };
 module.exports = mysql;
