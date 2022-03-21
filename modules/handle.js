@@ -414,7 +414,7 @@ const hostelData = {
     pool.getConnection(function (err, connection) {
       connection.query(
         hostelSql.queryHostelName,
-        ['%'+params.hostelName+'%'],
+        ['%' + params.hostelName + '%'],
         function (err, result) {
           if (result != '') {
             const _result = result
@@ -490,7 +490,7 @@ const hostelData = {
   },
   update: function (req, res, next) {
     const param = req.body
-    console.log(param.id ,param.hostelSex,param.hostelBuild, param.hostelName);
+    console.log(param.id, param.hostelSex, param.hostelBuild, param.hostelName);
     if (param.id == null || param.hostelSex == null || param.hostelBuild == null || param.hostelName == null) {
       json(res, undefined)
       return
@@ -720,14 +720,10 @@ const studentsData = {
         studentsSql.queryByHostel,
         [params.hostelId],
         function (err, result) {
-          if (result != '') {
-            const _result = result
-            result = {
-              result: 'select',
-              data: _result,
-            }
-          } else {
-            result = undefined
+          const _result = result
+          result = {
+            result: 'select',
+            data: _result,
           }
           json(res, result)
           connection.release()
