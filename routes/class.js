@@ -16,13 +16,13 @@ router.get('/queryByUserName', function (req, res, next) {
 router.get('/queryClassStrById', function (req, res, next) {
   classData.queryClassStrById(req, res, next);
 });
+router.get('/queryVocationalById', function (req, res, next) {
+  classData.queryVocationalById(req, res, next);
+});
 router.get('/deleteUser', function (req, res, next) {
   classData.delete(req, res, next);
 });
 router.get('/update', function (req, res, next) {
-  res.render('update');
-});
-router.post('/updateUser', function (req, res, next) {
   classData.update(req, res, next);
 });
 module.exports = router;

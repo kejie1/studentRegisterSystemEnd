@@ -11,7 +11,6 @@ const collegeSql = {
   insert: 'INSERT INTO s_college(collegeStr, principal) VALUES(?,?)',
   update: 'UPDATE s_college SET collegeStr=?, principal=? WHERE id=?',
   delete: 'DELETE FROM s_college WHERE id=?',
-  queryByUserName: 'SELECT * FROM s_college WHERE username=?',
   queryCollegeStrById: 'SELECT collegeStr FROM s_college WHERE id=?',
   queryCollegeById: 'SELECT * FROM s_college WHERE id=?',
   queryAll: 'SELECT * FROM s_college order by id asc limit ?, ?',
@@ -19,13 +18,14 @@ const collegeSql = {
   queryCollegeName: 'SELECT * FROM s_college WHERE collegeStr LIKE ?',
 }
 const vocationalSql = {
-  insert: 'INSERT INTO s_vocational(username, password,phone,email, status,accountType,collegeId) VALUES(?,?,?,?,?,?,?,?)',
-  update: 'UPDATE s_vocational SET username=?, password=?, status=?, auth=? WHERE id=?',
+  insert: 'INSERT INTO s_vocational(vocationalStr, principal,collegeId) VALUES(?,?,?)',
+  update: 'UPDATE s_vocational SET vocationalStr=?, principal=?, collegeId=? WHERE id=?',
   delete: 'DELETE FROM s_vocational WHERE id=?',
-  queryByUserName: 'SELECT * FROM s_vocational WHERE username=?',
+  queryCollegeName: 'SELECT * FROM s_vocational WHERE vocationalStr LIKE ?',
   queryVocationalStrById: 'SELECT * FROM s_vocational WHERE id=?',
   queryVocationalById: 'SELECT * FROM s_vocational WHERE collegeId=?',
   queryAll: 'SELECT * FROM s_vocational',
+  queryCount: 'SELECT COUNT(*) FROM s_vocational',
 }
 const studentsSql = {
   insert: 'INSERT INTO s_students(name,studentId,sex,age,phone,idCard,collegeId,vocationalId,classId,hostelId,ethnic,birthPlace,address,graduate,counselorId,counselorPhone) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
@@ -36,6 +36,7 @@ const studentsSql = {
   queryAll: 'SELECT * FROM s_students order by id asc limit ?, ?',
   queryCount: 'SELECT COUNT(*) FROM s_students',
   queryByHostel: 'SELECT * FROM s_students WHERE hostelId=?',
+
 }
 const counselorSql = {
   insert: 'INSERT INTO s_counselor(name,studentId,sex,age,phone,idCard,collegeId,vocationalId,classId,hostelId,ethnic,birthPlace,address,graduate,counselorId,counselorPhone) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
@@ -51,6 +52,7 @@ const classSql = {
   delete: 'DELETE FROM s_class WHERE id=?',
   queryByName: 'SELECT * FROM s_class WHERE name=? and collegeId=? and vocationalId=?',
   queryClassStrById: 'SELECT * FROM s_class WHERE id=?',
+  queryVocationalById: 'SELECT * FROM s_class WHERE vocationalId=?',
   queryAll: 'SELECT * FROM s_class',
 }
 const hostelSql = {

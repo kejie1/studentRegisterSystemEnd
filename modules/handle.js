@@ -274,7 +274,7 @@ const collegeData = {
     pool.getConnection(function (err, connection) {
       connection.query(
         collegeSql.queryCollegeName,
-        ['%' + params.id + '%'],
+        ['%' + params.collegeStr + '%'],
         function (err, result) {
           if (result != '') {
             const _result = result
@@ -350,14 +350,14 @@ const collegeData = {
 }
 // 专业
 const vocationalData = {
-  queryAll: function (req, res, next) {
+  queryCount: function (req, res, next) {
     pool.getConnection(function (err, connection) {
-      connection.query(vocationalSql.queryAll, function (err, result) {
+      connection.query(vocationalSql.queryCount, function (err, result) {
         if (result) {
           const _result = result
+          total = _result[0]['COUNT(*)']
           result = {
-            result: 'selectall',
-            data: _result,
+            result: 'select',
           }
         } else {
           result = undefined
@@ -365,6 +365,38 @@ const vocationalData = {
         json(res, result)
         connection.release()
       })
+    })
+  },
+  queryAll: function (req, res, next) {
+    let param = req.query || req.params
+    let currentPage = parseInt(param.currentPage || 1) // 页码
+    let end = parseInt(param.pageSize || 10) // 默认页数
+    let start = (currentPage - 1) * end
+    pool.getConnection(function (err, connection) {
+      connection.query(
+        vocationalSql.queryAll,
+        [start, end],
+        function (err, result) {
+          if (result) {
+            const _result = result
+            result = {
+              result: 'selectall',
+              data: {
+                result: _result,
+                pagination: {
+                  pageSize: end,
+                  currentPage,
+                  total,
+                },
+              },
+            }
+          } else {
+            result = undefined
+          }
+          json(res, result)
+          connection.release()
+        }
+      )
     })
   },
   queryVocationalStrById: function (req, res, next) {
@@ -411,6 +443,85 @@ const vocationalData = {
       )
     })
   },
+  queryCollegeName: function (req, res, next) {
+    const params = req.query
+    pool.getConnection(function (err, connection) {
+      connection.query(
+        vocationalSql.queryCollegeName,
+        ['%' + params.vocationalStr + '%'],
+        function (err, result) {
+          if (result != '') {
+            const _result = result
+            result = {
+              result: 'select',
+              data: _result,
+            }
+          } else {
+            result = undefined
+          }
+          json(res, result)
+          connection.release()
+        }
+      )
+    })
+  },
+  add: function (req, res, next) {
+    pool.getConnection(function (err, connection) {
+      const param = req.body
+      const params = [
+        param.vocationalStr,
+        param.principal,
+        param.collegeId
+      ]
+      connection.query(vocationalSql.insert, params, function (err, result) {
+        if (result.affectedRows > 0) {
+          result = 'add'
+        } else {
+          result = undefined
+        }
+        json(res, result)
+        connection.release()
+      })
+    })
+  },
+  update: function (req, res, next) {
+    const param = req.body
+    if (param.id == null || param.vocationalStr == null || param.principal == null || param.collegeId == null) {
+      json(res, undefined)
+      return
+    }
+    const params = [
+      param.collegeStr,
+      param.principal,
+      param.collegeId,
+      param.id,
+    ]
+    pool.getConnection(function (err, connection) {
+      connection.query(vocationalSql.update, params, function (err, result) {
+        if (result != '') {
+          result = 'update'
+        } else {
+          result = undefined
+        }
+        json(res, result)
+        connection.release()
+      })
+    })
+  },
+  delete: function (req, res, next) {
+    pool.getConnection(function (err, connection) {
+      const id = req.body.id
+      connection.query(vocationalSql.delete, id, function (err, result) {
+        if (result.affectedRows > 0) {
+          result = 'delete'
+        } else {
+          result = undefined
+        }
+        json(res, result)
+        connection.release()
+      })
+    })
+  },
 }
 // 班级
 const classData = {
@@ -437,6 +548,28 @@ const classData = {
       connection.query(
         classSql.queryClassStrById,
         [params.id],
+        function (err, result) {
+          if (result != '') {
+            const _result = result
+            result = {
+              result: 'select',
+              data: _result,
+            }
+          } else {
+            result = undefined
+          }
+          json(res, result)
+          connection.release()
+        }
+      )
+    })
+  },
+  queryVocationalById: function (req, res, next) {
+    const params = req.query
+    pool.getConnection(function (err, connection) {
+      connection.query(
+        classSql.queryVocationalById,
+        [params.vocationalId],
         function (err, result) {
           if (result != '') {
             const _result = result
