@@ -1,7 +1,7 @@
 //router/index.js
 const express = require('express');
 const router = express.Router();
-const {vocationalData} = require('../modules/handle');
+const { vocationalData } = require('../modules/handle');
 /* GET users listing. */
 router.post('/addUser', function (req, res, next) {
   vocationalData.addUser(req, res, next);
@@ -15,6 +15,9 @@ router.get('/queryByUserName', function (req, res, next) {
 });
 router.get('/queryVocationalStrById', function (req, res, next) {
   vocationalData.queryVocationalStrById(req, res, next);
+});
+router.get('/queryVocationalById', function (req, res, next) {
+  vocationalData.queryVocationalById(req, res, next);
 });
 router.get('/deleteUser', function (req, res, next) {
   vocationalData.delete(req, res, next);

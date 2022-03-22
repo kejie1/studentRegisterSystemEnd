@@ -24,6 +24,7 @@ const vocationalSql = {
   delete: 'DELETE FROM s_vocational WHERE id=?',
   queryByUserName: 'SELECT * FROM s_vocational WHERE username=?',
   queryVocationalStrById: 'SELECT * FROM s_vocational WHERE id=?',
+  queryVocationalById: 'SELECT * FROM s_vocational WHERE collegeId=?',
   queryAll: 'SELECT * FROM s_vocational',
 }
 const studentsSql = {

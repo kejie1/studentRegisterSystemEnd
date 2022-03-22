@@ -389,6 +389,28 @@ const vocationalData = {
       )
     })
   },
+  queryVocationalById: function (req, res, next) {
+    const params = req.query
+    pool.getConnection(function (err, connection) {
+      connection.query(
+        vocationalSql.queryVocationalById,
+        [params.collegeId],
+        function (err, result) {
+          if (result != '') {
+            const _result = result
+            result = {
+              result: 'select',
+              data: _result,
+            }
+          } else {
+            result = undefined
+          }
+          json(res, result)
+          connection.release()
+        }
+      )
+    })
+  },
 }
 // 班级
 const classData = {
