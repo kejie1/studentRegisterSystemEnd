@@ -4,7 +4,7 @@ const json = function (res, result) {
   if (typeof result === 'undefined') {
     res.json({
       code: 1,
-      msg: '操作失败'
+      msg: '数据加载失败，请联系管理员'
     });
   } else if (result === 'add') {
     res.json({

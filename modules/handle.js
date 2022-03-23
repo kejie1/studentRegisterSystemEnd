@@ -496,9 +496,11 @@ const vocationalData = {
       param.collegeId,
       param.id,
     ]
+    console.log(params);
     pool.getConnection(function (err, connection) {
       connection.query(vocationalSql.update, params, function (err, result) {
         if (result != '') {
+          console.log(err);
           result = 'update'
         } else {
           result = undefined
