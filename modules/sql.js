@@ -16,6 +16,7 @@ const collegeSql = {
   queryAll: 'SELECT * FROM s_college order by id asc limit ?, ?',
   queryCount: 'SELECT COUNT(*) FROM s_college',
   queryCollegeName: 'SELECT * FROM s_college WHERE collegeStr LIKE ?',
+  queryByClassId: 'SELECT * FROM s_college WHERE id=?',
 }
 const vocationalSql = {
   insert: 'INSERT INTO s_vocational(vocationalStr, principal,collegeId) VALUES(?,?,?)',
@@ -26,6 +27,7 @@ const vocationalSql = {
   queryVocationalById: 'SELECT * FROM s_vocational WHERE collegeId=?',
   queryAll: 'SELECT * FROM s_vocational',
   queryCount: 'SELECT COUNT(*) FROM s_vocational',
+  queryByClassId: 'SELECT * FROM s_vocational WHERE id=?',
 }
 const studentsSql = {
   insert: 'INSERT INTO s_students(name,studentId,sex,age,phone,idCard,collegeId,vocationalId,classId,hostelId,ethnic,birthPlace,address,graduate,counselorId,counselorPhone) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
@@ -36,7 +38,7 @@ const studentsSql = {
   queryAll: 'SELECT * FROM s_students order by id asc limit ?, ?',
   queryCount: 'SELECT COUNT(*) FROM s_students',
   queryByHostel: 'SELECT * FROM s_students WHERE hostelId=?',
-
+  queryByClassId: 'SELECT * FROM s_students WHERE classId=?',
 }
 const counselorSql = {
   insert: 'INSERT INTO s_counselor(name,studentId,sex,age,phone,idCard,collegeId,vocationalId,classId,hostelId,ethnic,birthPlace,address,graduate,counselorId,counselorPhone) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
@@ -44,16 +46,18 @@ const counselorSql = {
   delete: 'DELETE FROM s_counselor WHERE id=?',
   queryByName: 'SELECT * FROM s_counselor WHERE name=? and collegeId=? and vocationalId=?',
   queryPhoneByName: 'SELECT * FROM s_counselor WHERE id=?',
+  queryByClassId: 'SELECT * FROM s_counselor WHERE id=?',
+  queryByVocationalId: 'SELECT * FROM s_counselor WHERE vocationalId=?',
   queryAll: 'SELECT * FROM s_counselor order by id asc limit ?, ?',
 }
 const classSql = {
-  insert: 'INSERT INTO s_class(name,studentId,sex,age,phone,idCard,collegeId,vocationalId,classId,hostelId,ethnic,birthPlace,address,graduate,counselorId,counselorPhone) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-  update: 'UPDATE s_class SET name=?,sex=?,age=?,phone=?,idCard=?,college=?,class=?,hostelId=?,ethnic=?,birthPlace=?,address=?,college=?,counselor=?,counselorPhone=? WHERE id=?',
+  insert: 'INSERT INTO s_class(classStr,counselorId,vocationalId,collegeId) VALUES(?,?,?,?)',
+  update: 'UPDATE s_class SET classStr=?,counselorId=?,vocationalId=?,collegeId=? WHERE id=?',
   delete: 'DELETE FROM s_class WHERE id=?',
-  queryByName: 'SELECT * FROM s_class WHERE name=? and collegeId=? and vocationalId=?',
   queryClassStrById: 'SELECT * FROM s_class WHERE id=?',
   queryVocationalById: 'SELECT * FROM s_class WHERE vocationalId=?',
-  queryAll: 'SELECT * FROM s_class',
+  queryAll: 'SELECT * FROM s_class order by id asc limit ?, ?',
+  queryCount: 'SELECT COUNT(*) FROM s_class'
 }
 const hostelSql = {
   insert: 'INSERT INTO s_hostel ( hostelSex, hostelBuild, hostelName) VALUES (?,?,?)',

@@ -1,7 +1,7 @@
 //router/index.js
 const express = require('express');
 const router = express.Router();
-const {counselorData} = require('../modules/handle');
+const { counselorData } = require('../modules/handle');
 /* GET users listing. */
 router.post('/addUser', function (req, res, next) {
   counselorData.addUser(req, res, next);
@@ -11,6 +11,12 @@ router.get('/counselorList', function (req, res, next) {
 });
 router.get('/queryPhoneByName', function (req, res, next) {
   counselorData.queryPhoneByName(req, res, next);
+});
+router.get('/queryByVocationalId', function (req, res, next) {
+  counselorData.queryByVocationalId(req, res, next);
+});
+router.get('/queryByClassId', function (req, res, next) {
+  counselorData.queryByClassId(req, res, next);
 });
 router.get('/queryByUserName', function (req, res, next) {
   counselorData.queryByUserName(req, res, next);

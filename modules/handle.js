@@ -135,7 +135,7 @@ const userData = {
       })
     })
   },
-  logins(req, res, next) {
+  logins (req, res, next) {
     pool.getConnection((err, connection) => {
       const params = req.body || req.params
       connection.query(
@@ -275,6 +275,28 @@ const collegeData = {
       connection.query(
         collegeSql.queryCollegeName,
         ['%' + params.collegeStr + '%'],
+        function (err, result) {
+          if (result != '') {
+            const _result = result
+            result = {
+              result: 'select',
+              data: _result,
+            }
+          } else {
+            result = undefined
+          }
+          json(res, result)
+          connection.release()
+        }
+      )
+    })
+  },
+  queryByClassId: function (req, res, next) {
+    const params = req.query
+    pool.getConnection(function (err, connection) {
+      connection.query(
+        collegeSql.queryByClassId,
+        [params.classId],
         function (err, result) {
           if (result != '') {
             const _result = result
@@ -465,6 +487,28 @@ const vocationalData = {
       )
     })
   },
+  queryByClassId: function (req, res, next) {
+    const params = req.query
+    pool.getConnection(function (err, connection) {
+      connection.query(
+        vocationalSql.queryByClassId,
+        [params.classId],
+        function (err, result) {
+          if (result != '') {
+            const _result = result
+            result = {
+              result: 'select',
+              data: _result,
+            }
+          } else {
+            result = undefined
+          }
+          json(res, result)
+          connection.release()
+        }
+      )
+    })
+  },
   add: function (req, res, next) {
     pool.getConnection(function (err, connection) {
       const param = req.body
@@ -527,14 +571,15 @@ const vocationalData = {
 }
 // 班级
 const classData = {
-  queryAll: function (req, res, next) {
+  queryCount: function (req, res, next) {
     pool.getConnection(function (err, connection) {
-      connection.query(classSql.queryAll, function (err, result) {
-        if (result != '') {
+      connection.query(classSql.queryCount, function (err, result) {
+        if (result) {
+          console.log();
           const _result = result
+          total = _result[0]['COUNT(*)']
           result = {
-            result: 'selectall',
-            data: _result,
+            result: 'select',
           }
         } else {
           result = undefined
@@ -542,6 +587,38 @@ const classData = {
         json(res, result)
         connection.release()
       })
+    })
+  },
+  queryAll: function (req, res, next) {
+    let param = req.query || req.params
+    let currentPage = parseInt(param.currentPage || 1) // 页码
+    let end = parseInt(param.pageSize || 10) // 默认页数
+    let start = (currentPage - 1) * end
+    pool.getConnection(function (err, connection) {
+      connection.query(
+        classSql.queryAll,
+        [start, end],
+        function (err, result) {
+          if (result) {
+            const _result = result
+            result = {
+              result: 'selectall',
+              data: {
+                result: _result,
+                pagination: {
+                  pageSize: end,
+                  currentPage,
+                  total,
+                },
+              },
+            }
+          } else {
+            result = undefined
+          }
+          json(res, result)
+          connection.release()
+        }
+      )
     })
   },
   queryClassStrById: function (req, res, next) {
@@ -588,6 +665,67 @@ const classData = {
       )
     })
   },
+  add: function (req, res, next) {
+    pool.getConnection(function (err, connection) {
+      const param = req.body
+      const params = [
+        param.classStr,
+        param.counselorId,
+        param.vocationalId,
+        param.collegeId
+      ]
+      connection.query(classSql.insert, params, function (err, result) {
+        if (result.affectedRows > 0) {
+          result = 'add'
+        } else {
+          result = undefined
+        }
+        json(res, result)
+        connection.release()
+      })
+    })
+  },
+  update: function (req, res, next) {
+    const param = req.body
+    if (param.id == null || param.classStr == null || param.counselorId == null || param.collegeId == null || param.vocationalId == null) {
+      json(res, undefined)
+      return
+    }
+    const params = [
+      param.classStr,
+      param.counselorId,
+      param.vocationalId,
+      param.collegeId,
+      param.id
+    ]
+    console.log(params);
+    pool.getConnection(function (err, connection) {
+      connection.query(classSql.update, params, function (err, result) {
+        if (result != '') {
+          console.log(err);
+          result = 'update'
+        } else {
+          result = undefined
+        }
+        json(res, result)
+        connection.release()
+      })
+    })
+  },
+  delete: function (req, res, next) {
+    pool.getConnection(function (err, connection) {
+      const id = req.body.id
+      connection.query(classSql.delete, id, function (err, result) {
+        if (result.affectedRows > 0) {
+          result = 'delete'
+        } else {
+          result = undefined
+        }
+        json(res, result)
+        connection.release()
+      })
+    })
+  },
 }
 // 教师信息
 const counselorData = {
@@ -629,6 +767,50 @@ const counselorData = {
       connection.query(
         counselorSql.queryPhoneByName,
         [params.id],
+        function (err, result) {
+          if (result != '') {
+            const _result = result
+            result = {
+              result: 'select',
+              data: _result,
+            }
+          } else {
+            result = undefined
+          }
+          json(res, result)
+          connection.release()
+        }
+      )
+    })
+  },
+  queryByClassId: function (req, res, next) {
+    const params = req.query
+    pool.getConnection(function (err, connection) {
+      connection.query(
+        counselorSql.queryByClassId,
+        [params.classId],
+        function (err, result) {
+          if (result != '') {
+            const _result = result
+            result = {
+              result: 'select',
+              data: _result,
+            }
+          } else {
+            result = undefined
+          }
+          json(res, result)
+          connection.release()
+        }
+      )
+    })
+  },
+  queryByVocationalId: function (req, res, next) {
+    const params = req.query
+    pool.getConnection(function (err, connection) {
+      connection.query(
+        counselorSql.queryByVocationalId,
+        [params.vocationalId],
         function (err, result) {
           if (result != '') {
             const _result = result
@@ -885,6 +1067,28 @@ const studentsData = {
         // 释放连接
         connection.release()
       })
+    })
+  },
+  queryByClassId: function (req, res, next) {
+    const params = req.query
+    pool.getConnection(function (err, connection) {
+      connection.query(
+        studentsSql.queryByClassId,
+        [params.classId],
+        function (err, result) {
+          if (result != '') {
+            const _result = result
+            result = {
+              result: 'select',
+              data: _result,
+            }
+          } else {
+            result = undefined
+          }
+          json(res, result)
+          connection.release()
+        }
+      )
     })
   },
   delete: function (req, res, next) {

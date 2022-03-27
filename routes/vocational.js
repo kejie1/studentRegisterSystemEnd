@@ -9,7 +9,9 @@ router.post('/add', function (req, res, next) {
 router.get('/vocationalList', function (req, res, next) {
   vocationalData.queryAll(req, res, next);
 });
-
+router.get('/queryByClassId', function (req, res, next) {
+  vocationalData.queryByClassId(req, res, next);
+});
 router.get('/queryByUserName', function (req, res, next) {
   vocationalData.queryByUserName(req, res, next);
 });
