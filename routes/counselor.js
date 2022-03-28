@@ -4,7 +4,7 @@ const router = express.Router();
 const { counselorData } = require('../modules/handle');
 /* GET users listing. */
 router.post('/add', function (req, res, next) {
-  counselorData.addUser(req, res, next);
+  counselorData.add(req, res, next);
 });
 router.get('/counselorList', function (req, res, next) {
   counselorData.queryAll(req, res, next);

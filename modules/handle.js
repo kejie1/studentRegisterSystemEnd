@@ -844,6 +844,69 @@ const counselorData = {
       )
     })
   },
+  add: function (req, res, next) {
+    pool.getConnection(function (err, connection) {
+      const param = req.body
+      const params = [
+        param.name,
+        param.phone,
+        param.collegeId,
+        param.vocationalId,
+        param.classId,
+      ]
+      connection.query(classSql.insert, params, function (err, result) {
+        if (result != 0) {
+          result = 'add'
+        } else {
+          result = undefined
+        }
+        json(res, result)
+        connection.release()
+      })
+    })
+  },
+  update: function (req, res, next) {
+    const param = req.body
+    if (param.id == null || param.name == null || param.phone == null || param.collegeId == null) {
+      json(res, undefined)
+      return
+    }
+    const params = [
+      param.name,
+      param.phone,
+      param.collegeId,
+      param.vocationalId,
+      param.classId,
+      param.id
+    ]
+    console.log(params);
+    pool.getConnection(function (err, connection) {
+      connection.query(counselorSql.update, params, function (err, result) {
+        if (result != '') {
+          console.log(err);
+          result = 'update'
+        } else {
+          result = undefined
+        }
+        json(res, result)
+        connection.release()
+      })
+    })
+  },
+  delete: function (req, res, next) {
+    pool.getConnection(function (err, connection) {
+      const id = req.body.id
+      connection.query(counselorSql.delete, id, function (err, result) {
+        if (result.affectedRows > 0) {
+          result = 'delete'
+        } else {
+          result = undefined
+        }
+        json(res, result)
+        connection.release()
+      })
+    })
+  },
 }
 // 宿舍
 const hostelData = {

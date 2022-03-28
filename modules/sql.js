@@ -41,8 +41,8 @@ const studentsSql = {
   queryByClassId: 'SELECT * FROM s_students WHERE classId=?',
 }
 const counselorSql = {
-  insert: 'INSERT INTO s_counselor(name,studentId,sex,age,phone,idCard,collegeId,vocationalId,classId,hostelId,ethnic,birthPlace,address,graduate,counselorId,counselorPhone) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-  update: 'UPDATE s_counselor SET name=?,sex=?,age=?,phone=?,idCard=?,college=?,class=?,hostelId=?,ethnic=?,birthPlace=?,address=?,college=?,counselor=?,counselorPhone=? WHERE id=?',
+  insert: 'INSERT INTO s_counselor(name,phone,classId,vocationalId,collegeId) VALUES(?,?,?,?,?)',
+  update: 'UPDATE s_counselor SET name=?,phone=?,classId=?,vocationalId=?,collegeId=? WHERE id=?',
   delete: 'DELETE FROM s_counselor WHERE id=?',
   queryByName: 'SELECT * FROM s_counselor WHERE name=? and collegeId=? and vocationalId=?',
   queryPhoneByName: 'SELECT * FROM s_counselor WHERE id=?',
