@@ -49,6 +49,7 @@ const counselorSql = {
   queryByClassId: 'SELECT * FROM s_counselor WHERE id=?',
   queryByVocationalId: 'SELECT * FROM s_counselor WHERE vocationalId=?',
   queryAll: 'SELECT * FROM s_counselor order by id asc limit ?, ?',
+  queryCount: 'SELECT COUNT(*) FROM s_counselor',
 }
 const classSql = {
   insert: 'INSERT INTO s_class(classStr,counselorId,vocationalId,collegeId) VALUES(?,?,?,?)',

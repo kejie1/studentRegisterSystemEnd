@@ -9,6 +9,9 @@ router.post('/addCollege', function (req, res, next) {
 router.get('/collegeList', function (req, res, next) {
   collegeData.queryAll(req, res, next);
 });
+router.get('/queryCount', function (req, res, next) {
+  collegeData.queryCount(req, res, next);
+});
 router.get('/queryByClassId', function (req, res, next) {
   collegeData.queryByClassId(req, res, next);
 });

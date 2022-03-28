@@ -729,6 +729,23 @@ const classData = {
 }
 // 教师信息
 const counselorData = {
+  queryCount: function (req, res, next) {
+    pool.getConnection(function (err, connection) {
+      connection.query(counselorSql.queryCount, function (err, result) {
+        if (result) {
+          const _result = result
+          total = _result[0]['COUNT(*)']
+          result = {
+            result: 'select',
+          }
+        } else {
+          result = undefined
+        }
+        json(res, result)
+        connection.release()
+      })
+    })
+  },
   queryAll: function (req, res, next) {
     let param = req.query || req.params
     let currentPage = parseInt(param.currentPage || 1) // 页码
@@ -748,7 +765,7 @@ const counselorData = {
                 pagination: {
                   pageSize: end,
                   currentPage,
-                  total: result.length,
+                  total,
                 },
               },
             }
