@@ -40,7 +40,8 @@ const studentsSql = {
   queryByHostel: 'SELECT * FROM s_students WHERE hostelId=?',
   queryByClassId: 'SELECT * FROM s_students WHERE classId=?',
   queryeThnicDesc:'SELECT ethnic, count( * ) AS cntNum FROM s_students GROUP BY ethnic ORDER BY cntNum desc',
-  getCollegeCount:'SELECT collegeId, count( * ) AS cntNum FROM s_students GROUP BY collegeId ORDER BY cntNum'
+  getCollegeCount:'SELECT collegeId, count( * ) AS cntNum FROM s_students GROUP BY collegeId ORDER BY cntNum',
+  queryAgeCount:'SELECT age, count( * ) AS cntNum FROM s_students GROUP BY age ORDER BY age ASC'
 }
 const counselorSql = {
   insert: 'INSERT INTO s_counselor(name,phone,classId,vocationalId,collegeId) VALUES(?,?,?,?,?)',
