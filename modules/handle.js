@@ -1318,6 +1318,46 @@ const studentsData = {
       })
     })
   },
+  queryeThnicDesc: function (req, res, next) {
+    pool.getConnection(function (err, connection) {
+      connection.query(
+        studentsSql.queryeThnicDesc,
+        function (err, result) {
+          if (result) {
+            const _result = result
+            result = {
+              result: 'selectall',
+              data: _result
+            }
+          } else {
+            result = undefined
+          }
+          json(res, result)
+          connection.release()
+        }
+      )
+    })
+  },
+  queryCollegeCount: function (req, res, next) {
+    pool.getConnection(function (err, connection) {
+      connection.query(
+        studentsSql.getCollegeCount,
+        function (err, result) {
+          if (result) {
+            const _result = result
+            result = {
+              result: 'selectall',
+              data: _result
+            }
+          } else {
+            result = undefined
+          }
+          json(res, result)
+          connection.release()
+        }
+      )
+    })
+  },
 }
 module.exports = {
   userData,
