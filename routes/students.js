@@ -15,6 +15,9 @@ router.get('/queryAgeCount', function (req, res, next) {
 router.get('/queryeThnicDesc', function (req, res, next) {
   studentsData.queryeThnicDesc(req, res, next);
 });
+router.get('/queryeGraduateDesc', function (req, res, next) {
+  studentsData.queryeGraduateDesc(req, res, next);
+});
 router.get('/queryCollegeCount', function (req, res, next) {
   studentsData.queryCollegeCount(req, res, next);
 });

@@ -1338,6 +1338,26 @@ const studentsData = {
       )
     })
   },
+  queryeGraduateDesc: function (req, res, next) {
+    pool.getConnection(function (err, connection) {
+      connection.query(
+        studentsSql.queryeGraduateDesc,
+        function (err, result) {
+          if (result) {
+            const _result = result
+            result = {
+              result: 'selectall',
+              data: _result
+            }
+          } else {
+            result = undefined
+          }
+          json(res, result)
+          connection.release()
+        }
+      )
+    })
+  },
   queryAgeCount: function (req, res, next) {
     pool.getConnection(function (err, connection) {
       connection.query(
