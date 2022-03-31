@@ -465,18 +465,25 @@ const vocationalData = {
       )
     })
   },
-  queryCollegeName: function (req, res, next) {
+  queryVocationalName: function (req, res, next) {
     const params = req.query
     pool.getConnection(function (err, connection) {
       connection.query(
-        vocationalSql.queryCollegeName,
+        vocationalSql.queryVocationalName,
         ['%' + params.vocationalStr + '%'],
         function (err, result) {
           if (result != '') {
             const _result = result
             result = {
               result: 'select',
-              data: _result,
+              data: {
+                result: _result,
+                pagination: {
+                  pageSize: end,
+                  currentPage,
+                  total,
+                },
+              }
             }
           } else {
             result = undefined
@@ -535,9 +542,10 @@ const vocationalData = {
       return
     }
     const params = [
-      param.collegeStr,
+      param.vocationalStr,
       param.principal,
       param.collegeId,
+      param.cost,
       param.id,
     ]
     console.log(params);

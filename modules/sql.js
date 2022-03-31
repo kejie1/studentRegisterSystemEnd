@@ -20,12 +20,12 @@ const collegeSql = {
 }
 const vocationalSql = {
   insert: 'INSERT INTO s_vocational(vocationalStr, principal,collegeId) VALUES(?,?,?)',
-  update: 'UPDATE s_vocational SET vocationalStr=?, principal=?, collegeId=? WHERE id=?',
+  update: 'UPDATE s_vocational SET vocationalStr=?, principal=?, collegeId=?,cost=? WHERE id=?',
   delete: 'DELETE FROM s_vocational WHERE id=?',
-  queryCollegeName: 'SELECT * FROM s_vocational WHERE vocationalStr LIKE ?',
+  queryVocationalName: 'SELECT * FROM s_vocational WHERE vocationalStr LIKE ?',
   queryVocationalStrById: 'SELECT * FROM s_vocational WHERE id=?',
   queryVocationalById: 'SELECT * FROM s_vocational WHERE collegeId=?',
-  queryAll: 'SELECT * FROM s_vocational',
+  queryAll: 'SELECT * FROM s_vocational order by id asc limit ?, ?',
   queryCount: 'SELECT COUNT(*) FROM s_vocational',
   queryByClassId: 'SELECT * FROM s_vocational WHERE id=?',
 }

@@ -15,8 +15,8 @@ router.get('/queryCount', function (req, res, next) {
 router.get('/queryByClassId', function (req, res, next) {
   vocationalData.queryByClassId(req, res, next);
 });
-router.get('/queryByUserName', function (req, res, next) {
-  vocationalData.queryByUserName(req, res, next);
+router.get('/queryVocationalName', function (req, res, next) {
+  vocationalData.queryVocationalName(req, res, next);
 });
 router.get('/queryVocationalStrById', function (req, res, next) {
   vocationalData.queryVocationalStrById(req, res, next);
