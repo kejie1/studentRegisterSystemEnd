@@ -466,13 +466,16 @@ const vocationalData = {
     })
   },
   queryVocationalName: function (req, res, next) {
-    const params = req.query
+    const param = req.query
+    let currentPage = parseInt(param.currentPage || 1) // 页码
+    let end = parseInt(param.pageSize || 10) // 默认页数
     pool.getConnection(function (err, connection) {
       connection.query(
         vocationalSql.queryVocationalName,
-        ['%' + params.vocationalStr + '%'],
+        ['%' + param.vocationalStr + '%'],
         function (err, result) {
           if (result != '') {
+            console.log(err);
             const _result = result
             result = {
               result: 'select',
@@ -481,7 +484,7 @@ const vocationalData = {
                 pagination: {
                   pageSize: end,
                   currentPage,
-                  total,
+                  total:_result.length || 0,
                 },
               }
             }
