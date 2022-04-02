@@ -12,6 +12,9 @@ router.get('/studentsList', function (req, res, next) {
 router.get('/queryAgeCount', function (req, res, next) {
   studentsData.queryAgeCount(req, res, next);
 });
+router.get('/getSexCount', function (req, res, next) {
+  studentsData.getSexCount(req, res, next);
+});
 router.get('/queryeThnicDesc', function (req, res, next) {
   studentsData.queryeThnicDesc(req, res, next);
 });

@@ -1318,7 +1318,6 @@ const studentsData = {
     pool.getConnection(function (err, connection) {
       const id = req.query.id
       connection.query(studentsSql.delete, id, function (err, result) {
-        console.log(result)
         if (result.affectedRows > 0) {
           result = 'delete'
         } else {
@@ -1369,10 +1368,32 @@ const studentsData = {
       )
     })
   },
-  queryAgeCount: function (req, res, next) {
+  getSexCount: function (req, res, next) {
+    const {sex} = req.query
     pool.getConnection(function (err, connection) {
       connection.query(
-        studentsSql.queryAgeCount,
+        studentsSql.getSexCount,sex,
+        function (err, result) {
+          if (result) {
+            const _result = result
+            result = {
+              result: 'selectall',
+              data: _result
+            }
+          } else {
+            result = undefined
+          }
+          json(res, result)
+          connection.release()
+        }
+      )
+    })
+  },
+  queryAgeCount: function (req, res, next) {
+    const {sex} = req.query
+    pool.getConnection(function (err, connection) {
+      connection.query(
+        studentsSql.queryAgeCount,sex,
         function (err, result) {
           if (result) {
             const _result = result
