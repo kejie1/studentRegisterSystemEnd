@@ -3,8 +3,9 @@ const userSql = {
   insert: 'INSERT INTO s_user(username, password,phone,email, status,accountType,collegeId) VALUES(?,?,?,?,?,?,?)',
   update: 'UPDATE s_user SET username=?, password=?,phone=?,email=?, status=?,accountType=?,collegeId=? WHERE id=?',
   delete: 'DELETE FROM s_user WHERE id=?',
-  queryByUserName: 'SELECT * FROM s_user WHERE username=?',
-  queryAll: 'SELECT * FROM s_user',
+  queryByUserName: 'SELECT * FROM s_user WHERE username LIKE ? limit 10',
+  queryCount: 'SELECT COUNT(*) FROM s_user',
+  queryAll: 'SELECT * FROM s_user order by id asc limit ?, ?',
   logins: 'SELECT * FROM s_user where username=? and password=?'
 };
 const collegeSql = {
@@ -33,7 +34,7 @@ const studentsSql = {
   insert: 'INSERT INTO s_students(name,studentId,sex,age,phone,idCard,collegeId,vocationalId,classId,hostelId,ethnic,birthPlace,address,graduate,counselorId,counselorPhone) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
   update: 'UPDATE s_students SET name=?,studentId=?,sex=?,age=?,phone=?,idCard=?,collegeId=?,vocationalId=?,classId=?,hostelId=?,ethnic=?,birthPlace=?,address=?,graduate=?,counselorId=?,counselorPhone=? WHERE id=?',
   delete: 'DELETE FROM s_students WHERE id=?',
-  queryByName: 'SELECT * FROM s_students WHERE name=? and collegeId=? and vocationalId=?',
+  queryByName: 'SELECT * FROM s_students WHERE name LIKE ?',
   queryById: 'SELECT * FROM s_students WHERE id=?',
   queryAll: 'SELECT * FROM s_students order by id asc limit ?, ?',
   queryCount: 'SELECT COUNT(*) FROM s_students',
@@ -63,7 +64,8 @@ const classSql = {
   queryClassStrById: 'SELECT * FROM s_class WHERE id=?',
   queryVocationalById: 'SELECT * FROM s_class WHERE vocationalId=?',
   queryAll: 'SELECT * FROM s_class order by id asc limit ?, ?',
-  queryCount: 'SELECT COUNT(*) FROM s_class'
+  queryCount: 'SELECT COUNT(*) FROM s_class',
+  queryClassName: 'SELECT * FROM s_class WHERE classStr LIKE ? limit 10',
 }
 const hostelSql = {
   insert: 'INSERT INTO s_hostel ( hostelSex, hostelBuild, hostelName) VALUES (?,?,?)',
@@ -72,6 +74,6 @@ const hostelSql = {
   queryHostelName: 'SELECT * FROM s_hostel WHERE hostelName LIKE ?',
   queryById: 'SELECT * FROM s_hostel WHERE id=?',
   queryAll: 'SELECT * FROM s_hostel order by id asc limit ?, ?',
-  queryCount: 'SELECT COUNT(*) FROM s_students',
+  queryCount: 'SELECT COUNT(*) FROM s_hostel',
 }
 module.exports = { userSql, collegeSql, studentsSql, vocationalSql, counselorSql, classSql, hostelSql };

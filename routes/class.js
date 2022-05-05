@@ -15,6 +15,9 @@ router.get('/queryCount', function (req, res, next) {
 router.get('/queryByUserName', function (req, res, next) {
   classData.queryByUserName(req, res, next);
 });
+router.get('/queryClassName', function (req, res, next) {
+  classData.queryClassName(req, res, next);
+});
 router.get('/queryClassStrById', function (req, res, next) {
   classData.queryClassStrById(req, res, next);
 });

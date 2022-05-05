@@ -31,6 +31,55 @@ const Promise = require('promise')
 const pool = mysql.createPool(poolExtend({}, mysqlconfig))
 let total = 0
 const userData = {
+  queryCount: function (req, res, next) {
+    pool.getConnection(function (err, connection) {
+      connection.query(userSql.queryCount, function (err, result) {
+        if (result) {
+          const _result = result
+          total = _result[0]['COUNT(*)']
+          result = {
+            result: 'select',
+          }
+        } else {
+          result = undefined
+        }
+        json(res, result)
+        connection.release()
+      })
+    })
+  },
+  queryAll: function (req, res, next) {
+    let param = req.query || req.params
+    let currentPage = parseInt(param.currentPage || 1) // 页码
+    let end = parseInt(param.pageSize || 10) // 默认页数
+    let start = (currentPage - 1) * end
+    pool.getConnection(function (err, connection) {
+      connection.query(
+        userSql.queryAll,
+        [start, end],
+        function (err, result) {
+          if (result) {
+            const _result = result
+            result = {
+              result: 'selectall',
+              data: {
+                result: _result,
+                pagination: {
+                  pageSize: end,
+                  currentPage,
+                  total,
+                },
+              },
+            }
+          } else {
+            result = undefined
+          }
+          json(res, result)
+          connection.release()
+        }
+      )
+    })
+  },
   addUser: function (req, res, next) {
     pool.getConnection(function (err, connection) {
       const param = req.body
@@ -97,42 +146,25 @@ const userData = {
     })
   },
   queryByUserName: function (req, res, next) {
-    const username = req.query.username
+    const param = req.query
     pool.getConnection(function (err, connection) {
       connection.query(
         userSql.queryByUserName,
-        username,
+        ['%' + param.username + '%'],
         function (err, result) {
-          if (result.affectedRows > 0) {
+          if (result != '') {
             const _result = result
             result = {
               result: 'select',
               data: _result,
             }
           } else {
-            result = undefined
+            result = 'nodata'
           }
           json(res, result)
           connection.release()
         }
       )
-    })
-  },
-  queryAll: function (req, res, next) {
-    pool.getConnection(function (err, connection) {
-      connection.query(userSql.queryAll, function (err, result) {
-        if (result) {
-          const _result = result
-          result = {
-            result: 'selectall',
-            data: _result,
-          }
-        } else {
-          result = undefined
-        }
-        json(res, result)
-        connection.release()
-      })
     })
   },
   logins (req, res, next) {
@@ -283,7 +315,7 @@ const collegeData = {
               data: _result,
             }
           } else {
-            result = undefined
+            result = 'nodata'
           }
           json(res, result)
           connection.release()
@@ -489,7 +521,7 @@ const vocationalData = {
               }
             }
           } else {
-            result = undefined
+            result = 'nodata'
           }
           json(res, result)
           connection.release()
@@ -735,6 +767,28 @@ const classData = {
         json(res, result)
         connection.release()
       })
+    })
+  },
+  queryClassName: function (req, res, next) {
+    const params = req.query
+    pool.getConnection(function (err, connection) {
+      connection.query(
+        classSql.queryClassName,
+        ['%' + params.classStr + '%'],
+        function (err, result) {
+          if (result != '') {
+            const _result = result
+            result = {
+              result: 'select',
+              data: _result,
+            }
+          } else {
+            result = 'nodata'
+          }
+          json(res, result)
+          connection.release()
+        }
+      )
     })
   },
 }
@@ -986,7 +1040,7 @@ const hostelData = {
               },
             }
           } else {
-            result = undefined
+            result = 'nodata'
           }
           json(res, result)
           connection.release()
@@ -1257,10 +1311,11 @@ const studentsData = {
     pool.getConnection(function (err, connection) {
       connection.query(
         studentsSql.queryByName,
-        [params.name, params.collegeId, params.vocationalId],
+        ['%'+params.name+'%'],
         function (err, result) {
           if (result != '') {
             const _result = result
+            console.log(err);
             result = {
               result: 'select',
               data: _result,

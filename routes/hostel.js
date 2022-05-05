@@ -9,6 +9,9 @@ router.post('/addHostel', function (req, res, next) {
 router.get('/hostelList', function (req, res, next) {
   hostelData.queryAll(req, res, next);
 });
+router.get('/queryCount', function (req, res, next) {
+  hostelData.queryCount(req, res, next);
+});
 
 router.get('/queryHostelName', function (req, res, next) {
   hostelData.queryHostelName(req, res, next);

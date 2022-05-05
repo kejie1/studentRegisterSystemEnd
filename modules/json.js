@@ -33,6 +33,11 @@ const json = function (res, result) {
       msg: '全部查找成功',
       data: result.data
     });
+  }else if (result === 'nodata') {
+    res.json({
+      code: -1,
+      msg: '未找到该数据'
+    });
   } else {
     res.json(result);
   }

@@ -6,6 +6,9 @@ const {userData} = require('../modules/handle');
 router.get('/', function (req, res, next) {
   res.render('index', { title: 'SQL for MySQL' });
 });
+router.get('/queryCount', function (req, res, next) {
+  userData.queryCount(req, res, next);
+});
 router.post('/addUser', function (req, res, next) {
   userData.addUser(req, res, next);
 });
